@@ -32,9 +32,9 @@ dc_oc,True,,801,False,OC,,OC ,Orden de Compra,OC
 dc_li,True,,103,False,LIQ,,LIQ ,Liquidación,LIQ
 dc_gd,True,,50,False,GD,stock_picking,GD ,Guía de Despacho,GD
 dc_gd_dte,True,,52,True,GDE,stock_picking,GDE ,Guía de Despacho Electrónica,GDE
-dc_fe_dte,True,,110,True,FCXE,,FCXE ,Factura de Exportación Electrónica,FCXE
-dc_ndex_dte,True,,111,True,NDXE,,NDXE ,Nota de Débito de Exportación Electrónica,NDXE
-dc_ncex_dte,True,,112,True,NCXE,,NCXE ,Nota de Crédito de Exportación Electrónica,NCXE
+dc_fe_dte,True,,110,True,FCXE,invoice,FCXE ,Factura de Exportación Electrónica,FCXE
+dc_ndex_dte,True,,111,True,NDXE,debit_note,NDXE ,Nota de Débito de Exportación Electrónica,NDXE
+dc_ncex_dte,True,,112,True,NCXE,credit_note,NCXE ,Nota de Crédito de Exportación Electrónica,NCXE
 dc_ndp,True,,802,False,NP,,NP ,Nota de pedido,NP
 dc_cont,True,,803,False,CONT,,CONT ,Contrato,CONT
 dc_resol,True,,804,False,RES,,RES ,Resolución,RES
