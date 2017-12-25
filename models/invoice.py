@@ -36,7 +36,11 @@ class AccountInvoiceLine(models.Model):
         self.price_subtotal_signed = price_subtotal_signed * sign
         self.price_tax_included = taxes['total_included'] if (taxes and taxes['total_included'] > total) else total
 
-    price_tax_included = fields.Monetary(string='Amount', readonly=True, compute='_compute_price')
+    price_tax_included = fields.Monetary(
+            string='Amount',
+            readonly=True,
+            compute='_compute_price',
+        )
 
 class AccountInvoiceTax(models.Model):
     _inherit = "account.invoice.tax"
@@ -50,29 +54,29 @@ class AccountInvoiceTax(models.Model):
             for line in tax.invoice_id.invoice_line_ids:
                 if tax.tax_id in line.invoice_line_tax_ids and tax.tax_id.price_include:
                     price_tax_included += line.price_tax_included
-            if price_tax_included > 0 and  tax.tax_id.sii_type in ["R"]:
+            if price_tax_included > 0 and  tax.tax_id.sii_type in ["R"] and tax.tax_id.amount > 0:
                 base = round(price_tax_included)
-            elif price_tax_included > 0:
+            elif price_tax_included > 0 and tax.tax_id.amount > 0:
                 base = round(price_tax_included / ( 1 + tax.tax_id.amount / 100.0))
             neto += base
         return neto
 
     def _compute_base_amount(self):
-        included = False
+        super(AccountInvoiceTax, self)._compute_base_amount()
         for tax in self:
             if tax.tax_id.price_include:
-                included = True
-        if included:
-            neto = self._getNeto()
-            tax.base = neto
-        else:
-            super(AccountInvoiceTax, self)._compute_base_amount()
+                neto = self._getNeto()
+                tax.base = neto
 
-    amount_retencion = fields.Monetary(string="Retención",
-        default=0.00,)
-    retencion_account_id = fields.Many2one('account.account',
-       string='Tax Account',
-       domain=[('deprecated', '=', False)])
+    amount_retencion = fields.Monetary(
+            string="Retención",
+            default=0.00,
+        )
+    retencion_account_id = fields.Many2one(
+            'account.account',
+            string='Tax Account',
+            domain=[('deprecated', '=', False)],
+        )
 
 class account_invoice(models.Model):
     _inherit = "account.invoice"
