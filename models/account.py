@@ -160,6 +160,19 @@ class account_move(models.Model):
             res[record.id] = document_number
         return res
 
+
+
+
+        """       res = {}
+        for record in self:
+            document_number = False
+            if record.model and record.res_id:
+                document_number = self.document_number
+            res[record.id] = document_number
+        return res
+
+        """
+
     @api.one
     @api.depends(
         'sii_document_number',
