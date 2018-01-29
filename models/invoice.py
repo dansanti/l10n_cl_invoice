@@ -428,12 +428,9 @@ class account_invoice(models.Model):
                 ).id
             self.journal_document_class_id = self._default_journal_document_class_id(default)
 
-    @api.onchange('sii_document_class_id')
+    @api.onchange('sii_document_class_id', 'partner_id')
     def _check_vat(self):
-        boleta_ids = [
-            self.env.ref('l10n_cl_invoice.dc_bzf_f_dtn').id,
-            self.env.ref('l10n_cl_invoice.dc_b_f_dtm').id]
-        if self.sii_document_class_id not in boleta_ids and self.partner_id.document_number == '' or self.partner_id.document_number == '0':
+        if self.partner_id and not self._es_boleta() and not self.partner_id.commercial_partner_id.document_number:
             raise UserError(_("""The customer/supplier does not have a VAT \
 defined. The type of invoicing document you selected requires you tu settle \
 a VAT."""))
