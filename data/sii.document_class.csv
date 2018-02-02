@@ -49,3 +49,4 @@ dc_res_sna,True,,812,False,RSN,,RSN ,Resolución del SNA donde califica Servicio
 dc_pasap,True,,813,False,PSP,,PSP ,Pasaporte,PSP
 dc_cd_bol,True,,814,False,CRTD,,CRTD ,Certificado de Depósito Bolsa Prod. Chile.,CRTD
 dc_vp_pren,True,,815,False,VLPR,,VLPR ,Vale de Prenda Bolsa Prod. Chile,VLPR
+dc_b_f_trn,True,dl_b,48,False,TRN ,invoice,TRN ,Vales Comprobantes Transbank,TRN
