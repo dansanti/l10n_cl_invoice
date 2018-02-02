@@ -67,6 +67,7 @@
                  <field name="name" />
                </xpath>
                 <form>
+                    <field name="sii_document_class_id" invisible="1"/>
                     <field name="available_journal_document_class_ids" invisible="1"/>
                     <field name="use_documents" invisible="1"/>
                     <field name="sii_document_number" invisible="1"/>
