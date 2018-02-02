@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from odoo import osv, models, fields, api, _
-from odoo.tools.translate import _
 from odoo.exceptions import except_orm, UserError
 import odoo.addons.decimal_precision as dp
 import logging
@@ -689,7 +688,7 @@ a VAT."""))
             ('type', 'in', filter(None, map(TYPE2JOURNAL.get, inv_types))),
             ('company_id', '=', company_id.id),
         ]
-        return self.env['account.journal'].search(domain, limit=1)
+        return self.env['account.journal'].search(domain, limit=1, order="sequence asc")
 
 
 class Referencias(models.Model):

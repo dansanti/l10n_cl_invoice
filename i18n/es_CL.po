@@ -2,20 +2,22 @@
 # This file contains the translation of the following modules:
 # 	* l10n_cl_invoice
 # 	* account_bank_statement_import
-# 	* l10n_cl_libro_compra_venta
 # 	* purchase
 # 	* sale
 # 	* analytic
 # 	* account_financial_amount
+# 	* account_payment_fix
 # 	* account_accountant
+# 	* account_payment_group
+# 	* l10n_cl_chart_of_account
 # 	* stock_account
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0-20171030\n"
+"Project-Id-Version: Odoo Server 10.0-20161123\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-25 20:53+0000\n"
-"PO-Revision-Date: 2018-01-25 17:55-0300\n"
+"POT-Creation-Date: 2017-11-21 13:01+0000\n"
+"PO-Revision-Date: 2017-11-21 10:35-0300\n"
 "Last-Translator: Nelson Ramírez <info@konos.cl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -51,37 +53,37 @@ msgid ""
 "<p>Best regards,</p>\n"
 msgstr ""
 "\n"
-"<p>Hola\n"
+"<p>Dear\n"
 "% if object.partner_id.is_company and object.child_ids:\n"
 "    ${object.partner_id.child_ids[0].name}\n"
 "% else :\n"
 "    ${object.partner_id.name}\n"
 "% endif\n"
 ",</p><p>\n"
-"Ésta es una ${object.state in ('draft', 'sent') and 'solicitud de presupuesto' or 'confirmación de pedido de compra'}  <strong>${object.name}</strong>\n"
+"Here is a ${object.state in ('draft', 'sent') and 'request for quotation' or 'purchase order confirmation'} <strong>${object.name}</strong>\n"
 "% if object.partner_ref:\n"
-"    con su referencia: ${object.partner_ref}\n"
+"    with reference: ${object.partner_ref}\n"
 "% endif\n"
 "% if object.origin:\n"
-"    (referencia de pedido: ${object.origin})\n"
+"    (RFQ origin: ${object.origin})\n"
 "% endif\n"
-"Total del pedido <strong>${object.amount_total} ${object.currency_id.name}</strong>\n"
-"de ${object.company_id.name}.\n"
+"amounting in <strong>${object.amount_total} ${object.currency_id.name}</strong>\n"
+"from ${object.company_id.name}.\n"
 "</p>\n"
 "\n"
-"<p>Si tiene alguna duda, no dude en contactarnos.</p>\n"
-"<p>Saludos,</p>\n"
+"<p>If you have any question, do not hesitate to contact us.</p>\n"
+"<p>Best regards,</p>\n"
 
 #. module: sale
 #: model:mail.template,body_html:sale.email_template_edi_sale
 msgid ""
 "\n"
 "<p>Dear ${object.partner_id.name}\n"
-"% set access_action = object.with_context(force_website=True).get_access_action()\n"
+"% set access_action = object.get_access_action()\n"
 "% set doc_name = 'quotation' if object.state in ('draft', 'sent') else 'order confirmation'\n"
 "% set is_online = access_action and access_action['type'] == 'ir.actions.act_url'\n"
-"% set access_name = is_online and object.template_id and doc_name == 'quotation' and 'Accept and pay %s online' % doc_name or 'View %s' % doc_name\n"
-"% set access_url = is_online and access_action['url'] or None\n"
+"% set access_name = is_online and object.template_id and 'Accept and pay %s online' % doc_name or 'View %s' % doc_name\n"
+"% set access_url = is_online and access_action['url'] or object.get_signup_url()\n"
 "\n"
 "% if object.partner_id.parent_id:\n"
 "    (<i>${object.partner_id.parent_id.name}</i>)\n"
@@ -117,11 +119,11 @@ msgid ""
 msgstr ""
 "\n"
 "<p>Dear ${object.partner_id.name}\n"
-"% set access_action = object.with_context(force_website=True).get_access_action()\n"
+"% set access_action = object.get_access_action()\n"
 "% set doc_name = 'quotation' if object.state in ('draft', 'sent') else 'order confirmation'\n"
 "% set is_online = access_action and access_action['type'] == 'ir.actions.act_url'\n"
-"% set access_name = is_online and object.template_id and doc_name == 'quotation' and 'Accept and pay %s online' % doc_name or 'View %s' % doc_name\n"
-"% set access_url = is_online and access_action['url'] or None\n"
+"% set access_name = is_online and object.template_id and 'Accept and pay %s online' % doc_name or 'View %s' % doc_name\n"
+"% set access_url = is_online and access_action['url'] or object.get_signup_url()\n"
 "\n"
 "% if object.partner_id.parent_id:\n"
 "    (<i>${object.partner_id.parent_id.name}</i>)\n"
@@ -180,25 +182,25 @@ msgid ""
 "<p>Thank you,</p>\n"
 msgstr ""
 "\n"
-"<p>Hola ${object.partner_id.name} \n"
+"<p>Dear ${object.partner_id.name} \n"
 "% if object.partner_id.parent_id:\n"
 "    (<i>${object.partner_id.parent_id.name}</i>)\n"
 "% endif\n"
 ",</p>\n"
 "<p>\n"
-"Adjunto le remito la <strong>${object.state in ('draft', 'sent') and 'solicitud de presupuesto' or 'confirmación de pedido de compra} ${object.name}</strong>\n"
+"Please find in attachment a <strong>${object.state in ('draft', 'sent') and 'request for quotation' or 'purchase order confirmation'} ${object.name}</strong>\n"
 "% if object.partner_ref:\n"
-"    con su referencia: ${object.partner_ref}\n"
+"    with reference: ${object.partner_ref}\n"
 "% endif\n"
 "% if object.origin:\n"
-"    (referencia de pedido: ${object.origin})\n"
+"    (RFQ origin: ${object.origin})\n"
 "% endif\n"
-"Total del pedido <strong>${object.amount_total} ${object.currency_id.name}</strong>\n"
-"de ${object.company_id.name}.\n"
+"amounting <strong>${object.amount_total} ${object.currency_id.name}</strong>\n"
+"from ${object.company_id.name}.\n"
 "</p>\n"
 "\n"
-"<p>Si tiene alguna duda, puede responder este email.</p>\n"
-"<p>Gracias,</p>\n"
+"<p>You can reply to this email if you have any questions.</p>\n"
+"<p>Thank you,</p>\n"
 
 #. module: purchase
 #: model:ir.model.fields,help:purchase.field_purchase_config_settings_module_stock_dropshipping
@@ -230,23 +232,6 @@ msgstr ""
 "\n"
 "Esta opción permite registrar documentos tributarios electrónicos (DTEs) enviados a través del portal MiPyme, servicios de terceros, o por Odoo mismo (para registrar DTESs enviados directamente desde Odoo se requieren los módulos l10n_cl_dte/caf instalados.\n"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,help:l10n_cl_libro_compra_venta.field_account_move_book_state
-#: model:ir.model.fields,help:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_sii_result
-#: model:ir.model.fields,help:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_state
-msgid ""
-" * The 'Draft' status is used when a user is encoding a new and unconfirmed Invoice.\n"
-" * The 'Pro-forma' status is used the invoice does not have an invoice number.\n"
-" * The 'Open' status is used when user create invoice, an invoice number is generated. Its in open status till user does not pay invoice.\n"
-" * The 'Paid' status is set automatically when the invoice is paid. Its related journal entries may or may not be reconciled.\n"
-" * The 'Cancelled' status is used when user cancel invoice."
-msgstr ""
-" * The 'Draft' status is used when a user is encoding a new and unconfirmed Invoice.\n"
-" * The 'Pro-forma' status is used the invoice does not have an invoice number.\n"
-" * The 'Open' status is used when user create invoice, an invoice number is generated. Its in open status till user does not pay invoice.\n"
-" * The 'Paid' status is set automatically when the invoice is paid. Its related journal entries may or may not be reconciled.\n"
-" * The 'Cancelled' status is used when user cancel invoice."
-
 #. module: purchase
 #: code:addons/purchase/models/stock.py:87
 #, python-format
@@ -267,7 +252,6 @@ msgstr "# Ventas"
 
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_res_partner_supplier_invoice_count
-#: model:ir.model.fields,field_description:purchase.field_res_users_supplier_invoice_count
 msgid "# Vendor Bills"
 msgstr "# Documentos de Compra"
 
@@ -299,7 +283,6 @@ msgstr "Nº de productos"
 
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_res_partner_purchase_order_count
-#: model:ir.model.fields,field_description:purchase.field_res_users_purchase_order_count
 msgid "# of Purchase Order"
 msgstr "# de Órdenes de Compra"
 
@@ -310,7 +293,6 @@ msgstr "Nº de ctdad"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_res_partner_sale_order_count
-#: model:ir.model.fields,field_description:sale.field_res_users_sale_order_count
 msgid "# of Sales Order"
 msgstr "Nº de pedido de venta"
 
@@ -322,7 +304,7 @@ msgstr "${(object.name or '').replace('/','_')}${object.state == 'draft' and '_d
 #. module: sale
 #: model:mail.template,subject:sale.email_template_edi_sale
 msgid "${object.company_id.name} ${object.state in ('draft', 'sent') and 'Quotation' or 'Order'} (Ref ${object.name or 'n/a' })"
-msgstr "${object.company_id.name} ${object.state in ('draft', 'sent') and 'Cotización' or 'Pedido'} (Ref ${object.name or 'n/a' })"
+msgstr "${object.company_id.name} ${object.state in ('draft', 'sent') and 'Presupuesto' or 'Pedido'} (Ref ${object.name or 'n/a' })"
 
 #. module: purchase
 #: model:mail.template,subject:purchase.email_template_edi_purchase
@@ -336,7 +318,7 @@ msgid "${object.subject}"
 msgstr "${object.subject}"
 
 #. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:245
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:240
 #, python-format
 msgid "%d transactions had already been imported and were ignored."
 msgstr "%d transacciones ya habían sido importadas y fueron ignoradas."
@@ -352,16 +334,36 @@ msgstr "&amp;bull;"
 msgid "(update)"
 msgstr "(actualizar)"
 
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "+ Credit Note"
+msgstr "+ Nota de Crédito"
+
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "+ Debit Note"
+msgstr "+ Nota de Débito"
+
 #. module: l10n_cl_invoice
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.view_invoice_form
 msgid "- Next Number:"
 msgstr "- Próximo Número:"
 
 #. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:245
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:240
 #, python-format
 msgid "1 transaction had already been imported and was ignored."
 msgstr "1 transacción ha sido ya importada y será ignorada."
+
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,description:l10n_cl_chart_of_account.1_cervezas_compra
+msgid "15%"
+msgstr "15%"
+
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,description:l10n_cl_chart_of_account.1_iva_activo_fijo
+msgid "19%"
+msgstr "19%"
 
 #. module: sale
 #. openerp-web
@@ -375,16 +377,14 @@ msgstr "<b>Invite salespeople or managers</b> via email.<br/><i>Enter one email 
 msgid ""
 "<html>\n"
 "                <head></head>\n"
-"                % set record = ctx.get('record')\n"
-"                % set company = record and record.company_id or user.company_id\n"
 "                <body style=\"margin: 0; padding: 0;\">\n"
-"                <table border=\"0\" width=\"100%\" cellpadding=\"0\" bgcolor=\"#ededed\" style=\"padding: 20px; background-color: #ededed; border-collapse:separate;\" summary=\"o_mail_notification\">\n"
+"                <table border=\"0\" width=\"100%\" cellpadding=\"0\" bgcolor=\"#ededed\" style=\"padding: 20px; background-color: #ededed\" summary=\"o_mail_notification\">\n"
 "                    <tbody>\n"
 "\n"
 "                      <!-- HEADER -->\n"
 "                      <tr>\n"
 "                        <td align=\"center\" style=\"min-width: 590px;\">\n"
-"                          <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#875A7B\" style=\"min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;\">\n"
+"                          <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#875A7B\" style=\"min-width: 590px; background-color: rgb(135,90,123); padding: 20px;\">\n"
 "                            <tr>\n"
 "                              <td valign=\"middle\">\n"
 "                                  <span style=\"font-size:20px; color:white; font-weight: bold;\">\n"
@@ -392,7 +392,7 @@ msgid ""
 "                                  </span>\n"
 "                              </td>\n"
 "                              <td valign=\"middle\" align=\"right\">\n"
-"                                  <img src=\"/logo.png?company=${company.id}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" alt=\"${company.name}\">\n"
+"                                  <img src=\"/logo.png\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" alt=\"${user.company_id.name}\">\n"
 "                              </td>\n"
 "                            </tr>\n"
 "                          </table>\n"
@@ -402,7 +402,7 @@ msgid ""
 "                      <!-- CONTENT -->\n"
 "                      <tr>\n"
 "                        <td align=\"center\" style=\"min-width: 590px;\">\n"
-"                          <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#ffffff\" style=\"min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px; border-collapse:separate;\">\n"
+"                          <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#ffffff\" style=\"min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px;\">\n"
 "                            <tbody>\n"
 "                              <td valign=\"top\" style=\"font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;\">\n"
 "                                ${object.body | safe}\n"
@@ -415,19 +415,19 @@ msgid ""
 "                      <!-- FOOTER -->\n"
 "                      <tr>\n"
 "                        <td align=\"center\" style=\"min-width: 590px;\">\n"
-"                          <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#875A7B\" style=\"min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;\">\n"
+"                          <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#875A7B\" style=\"min-width: 590px; background-color: rgb(135,90,123); padding: 20px;\">\n"
 "                            <tr>\n"
 "                              <td valign=\"middle\" align=\"left\" style=\"color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;\">\n"
-"                                ${company.name}<br/>\n"
-"                                ${company.phone or ''}\n"
+"                                ${user.company_id.name}<br/>\n"
+"                                ${user.company_id.phone or ''}\n"
 "                              </td>\n"
 "                              <td valign=\"middle\" align=\"right\" style=\"color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;\">\n"
-"                                % if company.email:\n"
-"                                <a href=\"mailto:${company.email}\" style=\"text-decoration:none; color: white;\">${company.email}</a><br/>\n"
+"                                % if user.company_id.email:\n"
+"                                <a href=\"mailto:${user.company_id.email}\" style=\"text-decoration:none; color: white;\">${user.company_id.email}</a><br/>\n"
 "                                % endif\n"
-"                                % if company.website:\n"
-"                                    <a href=\"${company.website}\" style=\"text-decoration:none; color: white;\">\n"
-"                                        ${company.website}\n"
+"                                % if user.company_id.website:\n"
+"                                    <a href=\"${user.company_id.website}\" style=\"text-decoration:none; color: white;\">\n"
+"                                        ${user.company_id.website}\n"
 "                                    </a>\n"
 "                                % endif\n"
 "                              </td>\n"
@@ -448,16 +448,14 @@ msgid ""
 msgstr ""
 "<html>\n"
 "                <head></head>\n"
-"                % set record = ctx.get('record')\n"
-"                % set company = record and record.company_id or user.company_id\n"
 "                <body style=\"margin: 0; padding: 0;\">\n"
-"                <table border=\"0\" width=\"100%\" cellpadding=\"0\" bgcolor=\"#ededed\" style=\"padding: 20px; background-color: #ededed; border-collapse:separate;\" summary=\"o_mail_notification\">\n"
+"                <table border=\"0\" width=\"100%\" cellpadding=\"0\" bgcolor=\"#ededed\" style=\"padding: 20px; background-color: #ededed\" summary=\"o_mail_notification\">\n"
 "                    <tbody>\n"
 "\n"
 "                      <!-- HEADER -->\n"
 "                      <tr>\n"
 "                        <td align=\"center\" style=\"min-width: 590px;\">\n"
-"                          <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#875A7B\" style=\"min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;\">\n"
+"                          <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#875A7B\" style=\"min-width: 590px; background-color: rgb(135,90,123); padding: 20px;\">\n"
 "                            <tr>\n"
 "                              <td valign=\"middle\">\n"
 "                                  <span style=\"font-size:20px; color:white; font-weight: bold;\">\n"
@@ -465,7 +463,7 @@ msgstr ""
 "                                  </span>\n"
 "                              </td>\n"
 "                              <td valign=\"middle\" align=\"right\">\n"
-"                                  <img src=\"/logo.png?company=${company.id}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" alt=\"${company.name}\">\n"
+"                                  <img src=\"/logo.png\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" alt=\"${user.company_id.name}\">\n"
 "                              </td>\n"
 "                            </tr>\n"
 "                          </table>\n"
@@ -475,7 +473,7 @@ msgstr ""
 "                      <!-- CONTENT -->\n"
 "                      <tr>\n"
 "                        <td align=\"center\" style=\"min-width: 590px;\">\n"
-"                          <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#ffffff\" style=\"min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px; border-collapse:separate;\">\n"
+"                          <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#ffffff\" style=\"min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px;\">\n"
 "                            <tbody>\n"
 "                              <td valign=\"top\" style=\"font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;\">\n"
 "                                ${object.body | safe}\n"
@@ -488,19 +486,19 @@ msgstr ""
 "                      <!-- FOOTER -->\n"
 "                      <tr>\n"
 "                        <td align=\"center\" style=\"min-width: 590px;\">\n"
-"                          <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#875A7B\" style=\"min-width: 590px; background-color: rgb(135,90,123); padding: 20px; border-collapse:separate;\">\n"
+"                          <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#875A7B\" style=\"min-width: 590px; background-color: rgb(135,90,123); padding: 20px;\">\n"
 "                            <tr>\n"
 "                              <td valign=\"middle\" align=\"left\" style=\"color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;\">\n"
-"                                ${company.name}<br/>\n"
-"                                ${company.phone or ''}\n"
+"                                ${user.company_id.name}<br/>\n"
+"                                ${user.company_id.phone or ''}\n"
 "                              </td>\n"
 "                              <td valign=\"middle\" align=\"right\" style=\"color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;\">\n"
-"                                % if company.email:\n"
-"                                <a href=\"mailto:${company.email}\" style=\"text-decoration:none; color: white;\">${company.email}</a><br/>\n"
+"                                % if user.company_id.email:\n"
+"                                <a href=\"mailto:${user.company_id.email}\" style=\"text-decoration:none; color: white;\">${user.company_id.email}</a><br/>\n"
 "                                % endif\n"
-"                                % if company.website:\n"
-"                                    <a href=\"${company.website}\" style=\"text-decoration:none; color: white;\">\n"
-"                                        ${company.website}\n"
+"                                % if user.company_id.website:\n"
+"                                    <a href=\"${user.company_id.website}\" style=\"text-decoration:none; color: white;\">\n"
+"                                        ${user.company_id.website}\n"
 "                                    </a>\n"
 "                                % endif\n"
 "                              </td>\n"
@@ -539,11 +537,6 @@ msgstr "<p><b>Confirmar el pedido</b> si el cliente compra.</p>"
 #: model:ir.ui.view,arch_db:sale.view_sales_config
 msgid "<span>(*) This configuration is related to the company you're logged into.</span>"
 msgstr "<span>(*) Esta configuración está relacionada con la compañía en la que está conectado</span>"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
-msgid "<strong>Cantidad de Documentos</strong>"
-msgstr "<strong>Cantidad de Documentos</strong>"
 
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.report_purchaseorder_document
@@ -616,11 +609,6 @@ msgstr "<strong>Subtotal: </strong>"
 msgid "<strong>Taxes</strong>"
 msgstr "<strong>Impuestos</strong>"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
-msgid "<strong>Total General</strong>"
-msgstr "<strong>Total General</strong>"
-
 #. modules: purchase, sale
 #: model:ir.ui.view,arch_db:purchase.report_purchaseorder_document
 #: model:ir.ui.view,arch_db:sale.report_saleorder_document
@@ -652,17 +640,6 @@ msgstr "<strong>Su Referencia:</strong>"
 #: sql_constraint:account.bank.statement.line:0
 msgid "A bank account transactions can be imported only once !"
 msgstr "Las transacciones de una cuenta bancaria puede importarse sólo una vez!"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.actions.act_window,help:l10n_cl_libro_compra_venta.action_move_books
-#: model:ir.actions.act_window,help:l10n_cl_libro_compra_venta.action_move_consumo_folios
-#: model:ir.actions.act_window,help:l10n_cl_libro_compra_venta.action_move_libro_honorarios
-msgid ""
-"A journal entry consists of several journal items, each of\n"
-"          which is either a debit or a credit transaction."
-msgstr ""
-"A journal entry consists of several journal items, each of\n"
-"          which is either a debit or a credit transaction."
 
 #. module: sale
 #: selection:sale.config.settings,sale_pricelist_setting:0
@@ -704,10 +681,20 @@ msgstr "Propiedades de cuenta de existencias"
 msgid "Account Types Allowed"
 msgstr "Tipos de cuenta permitidos"
 
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_account_internal_type
+msgid "Account internal type"
+msgstr "Tipo de Cuenta interna"
+
 #. module: sale
 #: model:ir.model.fields,help:sale.field_sale_advance_payment_inv_deposit_account_id
 msgid "Account used for deposits"
 msgstr "Cuenta utilizada para depósitos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_date
+msgid "Accounting Date"
+msgstr "Fecha Contable"
 
 #. module: stock_account
 #: model:ir.ui.view,arch_db:stock_account.view_location_form_inherit
@@ -718,12 +705,6 @@ msgstr "Información contable"
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_account_control_ids
 msgid "Accounts Allowed"
 msgstr "Cuentas permitidas"
-
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,state:0
-#: selection:account.move.consumo_folios,state:0
-msgid "Aceptado"
-msgstr "Aceptado"
 
 #. modules: l10n_cl_invoice, analytic
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account_active
@@ -736,11 +717,17 @@ msgstr "Aceptado"
 msgid "Active"
 msgstr "Activo"
 
-#. module: l10n_cl_invoice
+#. modules: l10n_cl_invoice, l10n_cl_chart_of_account
+#: model:account.tax,name:l10n_cl_chart_of_account.1_iva_activo_fijo
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_tax_activo_fijo
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_tax_template_activo_fijo
 msgid "Activo Fijo"
 msgstr "Activo Fijo"
+
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Add All / Refresh"
+msgstr "Añadir Todo / Refrescar"
 
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_account_invoice_purchase_id
@@ -772,8 +759,13 @@ msgstr "Direcciones"
 msgid "Addresses in Sales Orders"
 msgstr "Direcciones en los pedidos de venta"
 
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_unreconciled_amount
+msgid "Adjusment / Advance"
+msgstr "Adelanto / Avance"
+
 #. module: sale
-#: code:addons/sale/wizard/sale_make_invoice_advance.py:156
+#: code:addons/sale/wizard/sale_make_invoice_advance.py:153
 #, python-format
 msgid "Advance: %s"
 msgstr "Anticipo: %s"
@@ -782,16 +774,6 @@ msgstr "Anticipo: %s"
 #: selection:sale.config.settings,sale_pricelist_setting:0
 msgid "Advanced pricing based on formulas (discounts, margins, rounding)"
 msgstr "Advanced pricing based on formulas (discounts, margins, rounding)"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
-msgid "Afecto"
-msgstr "Afecto"
-
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,tipo_envio:0
-msgid "Ajuste"
-msgstr "Ajuste"
 
 #. module: purchase
 #: selection:purchase.config.settings,group_warning_purchase:0
@@ -813,6 +795,26 @@ msgstr "Permitir cancelación de asientos"
 msgid "Allow discounts on sales order lines"
 msgstr "Permite establecer un descuento en las líneas de los pedidos de venta"
 
+#. module: account_payment_group
+#: model:res.groups,name:account_payment_group.group_pay_now_customer_invoices
+msgid "Allow pay now on customer invoices"
+msgstr "Permitir pago directo en facturas de cliente"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_config_settings_group_pay_now_customer_invoices
+msgid "Allow pay now on customer invoices?"
+msgstr "Permitir pago directo en facturas de cliente?"
+
+#. module: account_payment_group
+#: model:res.groups,name:account_payment_group.group_pay_now_vendor_invoices
+msgid "Allow pay now on vendor invoices"
+msgstr "Permitir pago directo en facturas de proveedor"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_config_settings_group_pay_now_vendor_invoices
+msgid "Allow pay now on vendor invoices?"
+msgstr "Permitir pago directo en facturas de proveedor?"
+
 #. module: purchase
 #: selection:purchase.config.settings,module_stock_dropshipping:0
 msgid "Allow suppliers to deliver directly to your customers"
@@ -827,6 +829,12 @@ msgstr "Allow to edit purchase orders"
 #: selection:sale.config.settings,auto_done_setting:0
 msgid "Allow to edit sales order from the 'Sales Order' menu (not from the Quotation menu)"
 msgstr "Permitir editar pedidos de ventas desde el menú 'Órdenes de Ventas' (no desde el menú de Presupuestos)"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_config_settings_group_pay_now_customer_invoices
+#: model:ir.model.fields,help:account_payment_group.field_account_config_settings_group_pay_now_vendor_invoices
+msgid "Allow users to choose a payment journal on invoices so that invoice is automatically paid after invoice validation. A payment will be created using choosen journal"
+msgstr "Permitir a los usuarios elegir un diario de pagos en las facturas así la misma es automáticamente pagada luego de la validación. Un pago se va a crear usando el diario seleccionado"
 
 #. module: purchase
 #: selection:purchase.config.settings,group_manage_vendor_price:0
@@ -874,12 +882,15 @@ msgid "Allows you to specify an analytic account on sales orders."
 msgstr "Permite especificar una cuenta analítica en pedidos de venta."
 
 #. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:247
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:242
 #, python-format
 msgid "Already imported items"
 msgstr "Elementos ya importados"
 
-#. modules: l10n_cl_invoice, analytic
+#. modules: l10n_cl_invoice, analytic, account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_amount
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_payments_amount
+#: model:ir.ui.view,arch_db:account_payment_group.view_move_line_tree
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_line_amount
 #: model:ir.ui.view,arch_db:analytic.view_account_analytic_line_form
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_invoice_line_price_tax_included
@@ -902,7 +913,8 @@ msgstr "Un administrador puede configurar los términos y condiciones por defect
 msgid "An informative or blocking warning can be set on a product or a customer"
 msgstr "An informative or blocking warning can be set on a product or a customer"
 
-#. modules: analytic, sale, purchase
+#. modules: analytic, account_payment_group, sale, purchase
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_account_analytic_id
 #: model:ir.model,name:analytic.model_account_analytic_account
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account_name
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_line_account_id
@@ -996,31 +1008,10 @@ msgstr "Contabilidad analítica para ventas"
 msgid "Anticipado"
 msgstr "Anticipado"
 
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book.honorarios,tipo_libro:0
-msgid "Anual"
-msgstr "Anual"
-
 #. module: l10n_cl_invoice
 #: selection:account.invoice.referencias,sii_referencia_CodRef:0
 msgid "Anula Documento de Referencia"
 msgstr "Anula Documento de Referencia"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_consumo_folios_form
-msgid "Anulaciones Manuales de Folio"
-msgstr "Anulaciones Manuales de Folio"
-
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,state:0
-#: selection:account.move.consumo_folios,state:0
-msgid "Anulado"
-msgstr "Anulado"
-
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.consumo_folios.detalles,tipo_operacion:0
-msgid "Anulados"
-msgstr "Anulados"
 
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.view_purchase_configuration
@@ -1052,12 +1043,6 @@ msgstr "Archivado"
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.view_supplier_invoice_form
 msgid "Ask Refund"
 msgstr "Pedir reembolso"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_book_compra_venta_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_consumo_folios_form
-msgid "Ask for DTE"
-msgstr "Consultar estado Documento"
 
 #. module: analytic
 #: model:ir.ui.view,arch_db:analytic.view_account_analytic_account_search
@@ -1137,7 +1122,7 @@ msgid "Balance"
 msgstr "Saldo pendiente"
 
 #. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:78
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:76
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_bank_id
 #, python-format
 msgid "Bank"
@@ -1167,6 +1152,11 @@ msgstr "Archivo de extracto bancario"
 #: model:ir.model,name:account_bank_statement_import.model_account_bank_statement_line
 msgid "Bank Statement Line"
 msgstr "Línea de extracto bancario"
+
+#. module: account_payment_fix
+#: model:ir.ui.menu,name:account_payment_fix.menu_finance_bank_and_cash
+msgid "Bank and Cash"
+msgstr "Banco y Caja"
 
 #. module: account_bank_statement_import
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_belongs_to_company
@@ -1200,12 +1190,6 @@ msgid "Billed Qty"
 msgstr "Cant. facturada"
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:601
-#, python-format
-msgid "Billed Quantity"
-msgstr "Cantidad facturada"
-
-#. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_invoice_status
 msgid "Billing Status"
 msgstr "Estatus de Facturación"
@@ -1229,34 +1213,11 @@ msgstr "Documentos Recibidos"
 msgid "Blocking Message"
 msgstr "Mensaje de bloqueo"
 
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,tipo_operacion:0
-msgid "Boleta Electrónica"
-msgstr "Boleta Electrónica"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_book_compra_venta_form
-msgid "Boletas"
-msgstr "Boletas"
-
 #. module: l10n_cl_invoice
 #: model:ir.actions.act_window,name:l10n_cl_invoice.honorarios_tree2
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_form
 msgid "Boletas Honorarios"
 msgstr "Boletas Honorarios"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_book_id
-msgid "Book id"
-msgstr "Book id"
-
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,state:0
-#: selection:account.move.book.honorarios,state:0
-#: selection:account.move.consumo_folios,state:0
-msgid "Borrador"
-msgstr "Borrador"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.report_configuration_search_view
@@ -1264,7 +1225,7 @@ msgid "Breaks Page"
 msgstr "Breaks Page"
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:865
+#: code:addons/purchase/models/purchase.py:797
 #: code:addons/purchase/models/stock.py:81
 #: model:stock.location.route,name:purchase.route_warehouse0_buy
 #, python-format
@@ -1314,7 +1275,7 @@ msgid "Can Edit Delivered"
 msgstr "Puede Modificar Entregado"
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:881
+#: code:addons/purchase/models/purchase.py:813
 #, python-format
 msgid "Can not cancel a procurement related to a purchase order. Please cancel the purchase order first."
 msgstr "No se puede cancelar un abastecimiento relacionado a una orden de compra. Primero cancele la orden de compra."
@@ -1325,11 +1286,12 @@ msgstr "No se puede cancelar un abastecimiento relacionado a una orden de compra
 msgid "Can't find any generic Buy route."
 msgstr "No se puede encontrar ninguna ruta 'Comprar' genérica."
 
-#. modules: l10n_cl_invoice, account_bank_statement_import, l10n_cl_libro_compra_venta, purchase, sale, stock_account
+#. modules: l10n_cl_invoice, account_bank_statement_import, purchase, sale, account_payment_group, stock_account
 #: model:ir.ui.view,arch_db:account_bank_statement_import.account_bank_statement_import_journal_creation_view
 #: model:ir.ui.view,arch_db:account_bank_statement_import.account_bank_statement_import_view
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_invoice_wizard
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.view_account_journal_document_config_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.sii_dte_masive_send_wizard_form
 #: model:ir.ui.view,arch_db:purchase.purchase_order_form
 #: model:ir.ui.view,arch_db:purchase.view_purchase_configuration
 #: model:ir.ui.view,arch_db:sale.view_order_form
@@ -1354,62 +1316,41 @@ msgstr "Cancelar"
 msgid "Canceled?"
 msgstr "¿Cancelada?"
 
-#. modules: purchase, sale
-#: selection:purchase.order,state:0 selection:purchase.report,state:0
-#: selection:sale.order,state:0 selection:sale.report,state:0
+#. modules: purchase, account_payment_group, sale
+#: selection:account.payment.group,state:0 selection:purchase.order,state:0
+#: selection:purchase.report,state:0 selection:sale.order,state:0
+#: selection:sale.report,state:0
 msgid "Cancelled"
 msgstr "Cancelado"
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:731
+#: code:addons/purchase/models/purchase.py:663
 #, python-format
 msgid "Cannot delete a purchase order line which is in state '%s'."
 msgstr "No se puede eliminar una línea de pedido de venta que esté en estado '%s'."
 
 #. module: stock_account
-#: code:addons/stock_account/models/stock.py:263
+#: code:addons/stock_account/models/stock.py:249
 #, python-format
 msgid "Cannot find a stock input account for the product %s. You must define one on the product category, or on the location, before processing this operation."
 msgstr "No puede encontrar una cuenta de entrada stock para el producto %s. Debe definir en la categoría de productos, o en el lugar, antes de procesar esta operación."
 
 #. module: stock_account
-#: code:addons/stock_account/models/stock.py:265
+#: code:addons/stock_account/models/stock.py:251
 #, python-format
 msgid "Cannot find a stock output account for the product %s. You must define one on the product category, or on the location, before processing this operation."
 msgstr "No puede encontrar una cuenta de valores de salida para el producto %s. Debe definir en la categoría de productos, o en el lugar, antes de procesar esta operación."
 
 #. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:167
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:165
 #, python-format
 msgid "Cannot find in which journal import this statement. Please manually select a journal."
 msgstr "No se puede encontrar un diario en el que importar este extracto. Por favor seleccione manualmente un diario."
 
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/wizard/notas.py:38
-#, python-format
-msgid "Cannot refund draft/proforma/cancelled invoice."
-msgstr "Cannot refund draft/proforma/cancelled invoice."
-
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/wizard/notas.py:40
-#, python-format
-msgid "Cannot refund invoice which is already reconciled, invoice should be unreconciled first. You can only refund this invoice."
-msgstr "Cannot refund invoice which is already reconciled, invoice should be unreconciled first. You can only refund this invoice."
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_cantidad
-msgid "Cantidad"
-msgstr "Cantidad"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_cantidad_boletas
-msgid "Cantidad Boletas"
-msgstr "Cantidad Boletas"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles_cantidad
-msgid "Cantidad Emitidos"
-msgstr "Cantidad Emitidos"
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,name:l10n_cl_chart_of_account.1_cervezas_compra
+msgid "Cervezas y bebidas alcohólicas Compras"
+msgstr "Cervezas y bebidas alcohólicas Compras"
 
 #. module: stock_account
 #: model:ir.ui.view,arch_db:stock_account.view_change_standard_price
@@ -1447,6 +1388,17 @@ msgstr "Marcar esta casilla para gestionar facturas en este equipo de ventas."
 #: model:ir.model.fields,help:sale.field_crm_team_use_quotations
 msgid "Check this box to manage quotations in this sales team."
 msgstr "Marque esta casilla para gestionar presupuestos en este equipo de ventas."
+
+#. module: l10n_cl_chart_of_account
+#: model:ir.ui.menu,name:l10n_cl_chart_of_account.account_reports_cl_statements_menu
+msgid "Chilean Statements"
+msgstr "Chilean Statements"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_config_settings_group_choose_payment_type
+#: model:res.groups,name:account_payment_group.group_choose_payment_type
+msgid "Choose Payment Type on Payments"
+msgstr "Elegir Tipo de Pago en Pagos"
 
 #. module: stock_account
 #: model:ir.ui.view,arch_db:stock_account.view_wizard_valuation_history
@@ -1490,13 +1442,6 @@ msgstr "Clic para añadir una nueva etiqueta."
 msgid "Click to add an analytic account."
 msgstr "Pulse para añadir una cuenta analítica."
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.actions.act_window,help:l10n_cl_libro_compra_venta.action_move_books
-#: model:ir.actions.act_window,help:l10n_cl_libro_compra_venta.action_move_consumo_folios
-#: model:ir.actions.act_window,help:l10n_cl_libro_compra_venta.action_move_libro_honorarios
-msgid "Click to create a journal entry."
-msgstr "Pulse para crear un asiento contable."
-
 #. module: purchase
 #: model:ir.actions.act_window,help:purchase.purchase_form_action
 msgid "Click to create a quotation that will be converted into a purchase order."
@@ -1533,6 +1478,17 @@ msgstr "Pulse para grabar una nueva factura de proveedor."
 msgid "Click to record a vendor bill related to this purchase."
 msgstr "Clic para registrar una factura de proveedor relativa a esta compra."
 
+#. module: account_payment_group
+#: model:ir.actions.act_window,help:account_payment_group.action_account_payments_group
+#: model:ir.actions.act_window,help:account_payment_group.action_account_payments_group_payable
+msgid "Click to register a payment"
+msgstr "Pulse para registrar un pago"
+
+#. module: account_payment_group
+#: model:ir.actions.act_window,help:account_payment_group.action_account_payments_transfer
+msgid "Click to register a transfer between liquidity journals"
+msgstr "Hacer click para registrar una transferencia entre diarios de liquidez"
+
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_document_type_code
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_point_of_sale_code
@@ -1555,14 +1511,20 @@ msgstr "¡El código debe ser único!"
 msgid "Color Index"
 msgstr "Índice de colores"
 
-#. modules: purchase, sale
+#. modules: purchase, account_payment_group, sale
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_commercial_partner_id
 #: model:ir.model.fields,field_description:purchase.field_purchase_report_commercial_partner_id
 #: model:ir.model.fields,field_description:sale.field_sale_report_commercial_partner_id
 msgid "Commercial Entity"
 msgstr "Entidad comercial"
 
-#. modules: l10n_cl_invoice, account_bank_statement_import, purchase, sale, analytic, stock_account
+#. modules: l10n_cl_invoice, account_bank_statement_import, purchase, sale, analytic, account_payment_group, stock_account
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_company_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_company_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_company_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_payment_group_company_id
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account_company_id
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_line_company_id
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_point_of_sale_company_id
@@ -1582,13 +1544,8 @@ msgstr "Entidad comercial"
 msgid "Company"
 msgstr "Compañía"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_company_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_sii_dte_build_sales_book_wizard_company_id
-msgid "Company id"
-msgstr "Company id"
-
-#. modules: l10n_cl_invoice, purchase, sale
+#. modules: l10n_cl_invoice, purchase, account_payment_group, sale
+#: model:ir.model,name:account_payment_group.model_res_company
 #: model:ir.model,name:l10n_cl_invoice.model_res_company
 #: model:ir.model,name:purchase.model_res_company
 #: model:ir.model,name:sale.model_res_company
@@ -1600,27 +1557,22 @@ msgstr "Empresa registró giros"
 msgid "Company related to this journal"
 msgstr "Compañía relacionada con este diario"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_company_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_company_id
-msgid "Compañía"
-msgstr "Compañía"
-
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:307
+#: code:addons/purchase/models/purchase.py:294
 #, python-format
 msgid "Compose Email"
 msgstr "Componer correo electrónico"
-
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,tipo_operacion:0
-msgid "Compras"
-msgstr "Compras"
 
 #. module: l10n_cl_invoice
 #: selection:account.invoice,no_rec_code:0 selection:account.move,no_rec_code:0
 msgid "Compras destinadas a IVA a generar operaciones no gravados o exentas."
 msgstr "Compras destinadas a IVA a generar operaciones no gravados o exentas."
+
+#. module: stock_account
+#: model:ir.ui.view,arch_db:stock_account.product_variant_easy_edit_view_inherit
+#: model:ir.ui.view,arch_db:stock_account.view_template_property_form
+msgid "Compute from average price"
+msgstr "Cálculo del precio promedio"
 
 #. module: l10n_cl_invoice
 #: model:ir.ui.menu,name:l10n_cl_invoice.menu_action_sii_concept_type
@@ -1633,7 +1585,7 @@ msgid "Configuration"
 msgstr "Configuración"
 
 #. module: stock_account
-#: code:addons/stock_account/models/stock.py:338
+#: code:addons/stock_account/models/stock.py:324
 #, python-format
 msgid "Configuration error. Please configure the price difference account on the product or its category to process this operation."
 msgstr "Configuration error. Please configure the price difference account on the product or its category to process this operation."
@@ -1651,9 +1603,10 @@ msgstr "Configuration options are available in the Settings app."
 msgid "Configure Purchases"
 msgstr "Configurar compras"
 
-#. modules: l10n_cl_invoice, l10n_cl_libro_compra_venta
+#. modules: l10n_cl_invoice, account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_invoice_wizard
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.view_account_journal_document_config_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.sii_dte_masive_send_wizard_form
 msgid "Confirm"
 msgstr "Confimar"
 
@@ -1667,6 +1620,11 @@ msgstr "Confirmar pedido"
 msgid "Confirm Sale"
 msgstr "Confirmar venta"
 
+#. module: account_payment_group
+#: model:res.groups,name:account_payment_group.account_confirm_payment
+msgid "Confirm payments (only if double validation is enabled)"
+msgstr "Confirm payments (only if double validation is enabled)"
+
 #. module: purchase
 #: selection:res.company,po_double_validation:0
 msgid "Confirm purchase orders in one step"
@@ -1677,24 +1635,15 @@ msgstr "Confirmar pedidos de compra en un único paso"
 msgid "Confirmation Date"
 msgstr "Fecha confirmación"
 
+#. module: account_payment_group
+#: selection:account.payment.group,state:0
+msgid "Confirmed"
+msgstr "Confirmado"
+
 #. module: purchase
 #: selection:res.company,po_lock:0
 msgid "Confirmed purchase orders are not editable"
 msgstr "Confirmed purchase orders are not editable"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.sii_dte_masive_send_wizard_form
-msgid "Construir Libro y enviar al SII ( quedará marcado como cierre de mes)"
-msgstr "Construir Libro y enviar al SII ( quedará marcado como cierre de mes)"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.actions.act_window,name:l10n_cl_libro_compra_venta.action_move_consumo_folios
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_anulaciones_cf_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles_cf_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_cf_id
-#: model:ir.ui.menu,name:l10n_cl_libro_compra_venta.menu_action_move_consumo_folios_form
-msgid "Consumo de Folios"
-msgstr "Consumo de Folios"
 
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_invoice_contact_id
@@ -1717,11 +1666,6 @@ msgstr "Control"
 msgid "Control Purchase Bills"
 msgstr "Control documentos compra"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_correlativo
-msgid "Correlativo"
-msgstr "Correlativo"
-
 #. module: l10n_cl_invoice
 #: selection:account.invoice.referencias,sii_referencia_CodRef:0
 msgid "Corrige montos"
@@ -1741,7 +1685,7 @@ msgstr "Coste"
 #: model:ir.model.fields,field_description:stock_account.field_product_product_cost_method
 #: model:ir.model.fields,field_description:stock_account.field_product_template_cost_method
 msgid "Cost method"
-msgstr "Método del coste"
+msgstr "Cost method"
 
 #. module: analytic
 #: model:ir.ui.view,arch_db:analytic.view_account_analytic_account_form
@@ -1774,7 +1718,7 @@ msgid ""
 msgstr "Los costes se crearán automáticamente cuando registre las facturas de proveedor, gastos o partes de horas."
 
 #. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:108
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:106
 #, python-format
 msgid ""
 "Could not make sense of the given file.\n"
@@ -1825,9 +1769,11 @@ msgstr "Crea un Presupuesto, el primer paso de una nueva venta."
 msgid "Create and View Invoices"
 msgstr "Crear y ver facturas"
 
-#. modules: l10n_cl_invoice, account_bank_statement_import, l10n_cl_libro_compra_venta, purchase, sale, analytic, stock_account
+#. modules: l10n_cl_invoice, account_bank_statement_import, purchase, sale, analytic, account_payment_group, stock_account
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_create_uid
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_create_uid
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_create_uid
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_create_uid
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account_create_uid
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_line_create_uid
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_tag_create_uid
@@ -1842,16 +1788,6 @@ msgstr "Crear y ver facturas"
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_point_of_sale_create_uid
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_responsability_create_uid
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_sucursal_create_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_create_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_create_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_create_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tax_create_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tax_create_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_anulaciones_create_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_create_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles_create_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_create_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_sii_dte_build_sales_book_wizard_create_uid
 #: model:ir.model.fields,field_description:purchase.field_purchase_config_settings_create_uid
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_line_create_uid
 #: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv_create_uid
@@ -1863,9 +1799,11 @@ msgstr "Crear y ver facturas"
 msgid "Created by"
 msgstr "Creado por"
 
-#. modules: l10n_cl_invoice, account_bank_statement_import, l10n_cl_libro_compra_venta, purchase, sale, analytic, stock_account
+#. modules: l10n_cl_invoice, account_bank_statement_import, purchase, sale, analytic, account_payment_group, stock_account
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_create_date
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_create_date
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_create_date
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_create_date
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account_create_date
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_line_create_date
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_tag_create_date
@@ -1880,16 +1818,6 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_point_of_sale_create_date
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_responsability_create_date
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_sucursal_create_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_create_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_create_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_create_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tax_create_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tax_create_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_anulaciones_create_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_create_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles_create_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_create_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_sii_dte_build_sales_book_wizard_create_date
 #: model:ir.model.fields,field_description:purchase.field_purchase_config_settings_create_date
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_create_date
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_line_create_date
@@ -1899,7 +1827,7 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:stock_account.field_stock_change_standard_price_create_date
 #: model:ir.model.fields,field_description:stock_account.field_wizard_valuation_history_create_date
 msgid "Created on"
-msgstr "Creado en"
+msgstr "Creado el"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_create_date
@@ -1910,6 +1838,16 @@ msgstr "Fecha creación"
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account_credit
 msgid "Credit"
 msgstr "Haber"
+
+#. module: account_payment_group
+#: model:ir.actions.act_window,name:account_payment_group.action_account_payment_group_invoice_wizard
+msgid "Credit / Debit Note"
+msgstr "Nota de Débito / Crédito"
+
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_invoice_wizard
+msgid "Credit Note"
+msgstr "Nota de Crédito"
 
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_journal_document_config_credit_notes
@@ -1922,14 +1860,18 @@ msgstr "Notas de Crédito"
 msgid "Crédito"
 msgstr "Crédito"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tax_credit
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tax_credit
-msgid "Créditos"
-msgstr "Créditos"
+#. module: l10n_cl_chart_of_account
+#: model:account.account.type,name:l10n_cl_chart_of_account.account_account_type_NCLASIFICADO
+msgid "Cuentas No Clasificadas"
+msgstr "Cuentas No Clasificadas"
 
-#. modules: l10n_cl_invoice, account_bank_statement_import, purchase, sale, analytic
+#. modules: l10n_cl_invoice, account_bank_statement_import, purchase, sale, analytic, account_payment_group
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_currency_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_company_currency_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_currency_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_currency_id
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account_currency_id
 #: model:ir.model,name:l10n_cl_invoice.model_res_currency
 #: model:ir.model.fields,field_description:purchase.field_purchase_config_settings_company_currency_id
@@ -1942,7 +1884,8 @@ msgstr "Créditos"
 msgid "Currency"
 msgstr "Moneda"
 
-#. modules: analytic, sale
+#. modules: analytic, account_payment_group, sale
+#: selection:account.payment.group,partner_type:0
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account_partner_id
 #: model:ir.model.fields,field_description:sale.field_sale_order_line_order_partner_id
 #: model:ir.model.fields,field_description:sale.field_sale_order_partner_id
@@ -1951,12 +1894,19 @@ msgstr "Moneda"
 msgid "Customer"
 msgstr "Cliente"
 
+#. module: account_payment_group
+#: model:ir.actions.act_window,name:account_payment_group.action_account_payments_group
+#: model:ir.ui.menu,name:account_payment_group.menu_action_account_payments_group_receivable
+msgid "Customer Receipts"
+msgstr "Ingresos"
+
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_client_order_ref
 msgid "Customer Reference"
-msgstr "N"
+msgstr "Referencia cliente"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_product_product_taxes_id
 #: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv_deposit_taxes_id
 msgid "Customer Taxes"
 msgstr "Impuestos de cliente"
@@ -1982,20 +1932,13 @@ msgstr "Código SII Sucursal"
 msgid "Código SII de la Sucursal"
 msgstr "Código SII de la Sucursal"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_codigo_rectificacion
-msgid "Código de Rectificación"
-msgstr "Código de Rectificación"
-
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_document_class_dte
 msgid "DTE"
 msgstr "DTE"
 
-#. modules: analytic, l10n_cl_libro_compra_venta, stock_account
+#. modules: analytic, stock_account
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_line_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_date
 #: model:ir.model.fields,field_description:stock_account.field_wizard_valuation_history_date
 msgid "Date"
 msgstr "Fecha"
@@ -2056,6 +1999,16 @@ msgstr "Métodos de débito"
 msgid "Debit Notes"
 msgstr "Notas de Débito"
 
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_debt_move_line_ids
+msgid "Debt Lines"
+msgstr "Líneas de Deuda"
+
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Debts"
+msgstr "Deudas"
+
 #. module: account_bank_statement_import
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_refund_sequence
 msgid "Dedicated Refund Sequence"
@@ -2114,9 +2067,7 @@ msgid "Delivered"
 msgstr "Entregado"
 
 #. module: sale
-#: code:addons/sale/models/sale.py:728
 #: model:ir.ui.view,arch_db:sale.view_order_form
-#, python-format
 msgid "Delivered Quantity"
 msgstr "Cantidad Entregada"
 
@@ -2162,7 +2113,9 @@ msgstr "Representa la fecha en que el presupuesto debe ser validado y se convier
 msgid "Deposit Product"
 msgstr "Producto de Depósito"
 
-#. modules: analytic, sale, purchase
+#. modules: analytic, account_payment_group, sale, purchase
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_line_name
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_line_name
 #: model:ir.model.fields,field_description:sale.field_sale_order_line_name
@@ -2181,25 +2134,15 @@ msgstr "Descripción para proveedores"
 msgid "Destination Location Type"
 msgstr "Tipo de ubicación de destino"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_name
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_name
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_name
-msgid "Detalle"
-msgstr "Detalle"
+#. module: account_payment_fix
+#: model:ir.model.fields,field_description:account_payment_fix.field_account_payment_destination_journal_ids
+msgid "Destination journal ids"
+msgstr "Diarios destino"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_impuestos
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_impuestos
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_anulaciones
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos
-msgid "Detalle Impuestos"
-msgstr "Detalle Impuestos"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles
-msgid "Detalle Rangos"
-msgstr "Detalle Rangos"
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group_payment_difference
+msgid "Difference between selected debt (or to pay amount) and payments amount"
+msgstr "Diferencia entre la deuda seleccionada (o pagar cantidad) y la cantidad de pagos"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.view_sales_config
@@ -2252,9 +2195,11 @@ msgstr "¿Discrimina IVA?"
 msgid "Display 3 fields on sales orders: customer, invoice address, delivery address"
 msgstr "Mostrar 3 campos en los pedidos de venta: cliente, dirección de factura, dirección de envío"
 
-#. modules: l10n_cl_invoice, account_bank_statement_import, l10n_cl_libro_compra_venta, purchase, sale, analytic, stock_account
+#. modules: l10n_cl_invoice, account_bank_statement_import, purchase, sale, analytic, account_payment_group, stock_account
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_display_name
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_display_name
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_display_name
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_display_name
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account_display_name
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_line_display_name
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_tag_display_name
@@ -2269,16 +2214,6 @@ msgstr "Mostrar 3 campos en los pedidos de venta: cliente, dirección de factura
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_point_of_sale_display_name
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_responsability_display_name
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_sucursal_display_name
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_display_name
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_display_name
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_display_name
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tax_display_name
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tax_display_name
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_anulaciones_display_name
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles_display_name
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_display_name
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_display_name
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_sii_dte_build_sales_book_wizard_display_name
 #: model:ir.model.fields,field_description:purchase.field_purchase_config_settings_display_name
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_display_name
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_line_display_name
@@ -2292,7 +2227,7 @@ msgstr "Mostrar 3 campos en los pedidos de venta: cliente, dirección de factura
 #: model:ir.model.fields,field_description:stock_account.field_stock_history_display_name
 #: model:ir.model.fields,field_description:stock_account.field_wizard_valuation_history_display_name
 msgid "Display Name"
-msgstr "Nombre mostrado"
+msgstr "Nombre a mostrar"
 
 #. module: sale
 #: model:res.groups,name:sale.group_display_incoterm
@@ -2370,13 +2305,11 @@ msgstr "Tipos de Documento"
 
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_partner_document_number
-#: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_users_document_number
 msgid "Document number"
 msgstr "Número de Identificación"
 
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_partner_document_type_id
-#: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_users_document_type_id
 msgid "Document type"
 msgstr "Tipo de Identificación"
 
@@ -2404,6 +2337,12 @@ msgstr "Tipos de Documentos"
 #: selection:purchase.report,state:0
 msgid "Done"
 msgstr "Realizado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_config_settings_double_validation
+#: model:ir.model.fields,field_description:account_payment_group.field_res_company_double_validation
+msgid "Double Validation on Payments?"
+msgstr "¿Doble validación en los Pagos?"
 
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_res_company_po_double_validation_amount
@@ -2447,16 +2386,17 @@ msgstr "Depósito (porcentaje)"
 msgid "Down payment of %s%%"
 msgstr "Depósito de %s%%"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_book_compra_venta_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_consumo_folios_form
-msgid "Download XML"
-msgstr "Descargar XML de envío"
-
 #. module: account_bank_statement_import
 #: model:ir.ui.view,arch_db:account_bank_statement_import.account_bank_statement_import_view
 msgid "Download a bank statement from your bank and import it here. Supported formats:"
 msgstr "Descargue un extracto bancario desde su banco e impórtelo aquí. Formatos soportados:"
+
+#. module: account_payment_group
+#: selection:account.payment.group,state:0
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Draft"
+msgstr "Borrador"
 
 #. module: l10n_cl_invoice
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_form
@@ -2488,38 +2428,16 @@ msgstr "Dirección Drop Ship"
 msgid "Dropshipping"
 msgstr "Dropshipping"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tax_debit
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tax_debit
-msgid "Débitos"
-msgstr "Débitos"
-
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/models/partner.py:76
-#, python-format
-msgid "El usuario %s está utilizando este documento"
-msgstr "El usuario %s está utilizando este documento"
-
 #. modules: purchase, sale
 #: model:ir.model,name:purchase.model_mail_compose_message
 #: model:ir.model,name:sale.model_mail_compose_message
 msgid "Email composition wizard"
 msgstr "Asistente de redacción de correo electrónico."
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
-msgid "Email:"
-msgstr "Correo electrónico:"
-
 #. module: purchase
 #: model:ir.model.fields,help:purchase.field_account_invoice_purchase_id
 msgid "Encoding help. When selected, the associated purchase order lines are added to the vendor bill. Several PO can be selected."
 msgstr "Ayuda de codificación. Cuando se selecciona, se añaden las líneas de órdenes de compra asociadas a la factura de proveedor. Varias OC se puede seleccionar."
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
-msgid "Entidad"
-msgstr "Entidad"
 
 #. module: l10n_cl_invoice
 #: selection:account.invoice,no_rec_code:0 selection:account.move,no_rec_code:0
@@ -2532,55 +2450,11 @@ msgstr "Entregas gratuitas (premios, bonificaciones, etc.) recibidos."
 msgid "Entry Sequence"
 msgstr "Secuencia del asiento"
 
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,state:0
-#: selection:account.move.consumo_folios,state:0
-msgid "Enviado"
-msgstr "Enviado"
-
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_move_sended
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.view_account_move_line_filter
 msgid "Enviado al SII"
 msgstr "Enviado al SII"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.actions.act_window,name:l10n_cl_libro_compra_venta.action_account_invoice_send
-msgid "Enviar Movimientos al SII"
-msgstr "Enviar Movimientos al SII"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_book_compra_venta_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_consumo_folios_form
-msgid "Envio SII"
-msgstr "Envio SII"
-
-#. module: l10n_cl_libro_compra_venta
-#: code:addons/l10n_cl_libro_compra_venta/models/consumo_folios.py:1138
-#: code:addons/l10n_cl_libro_compra_venta/models/libro.py:1441
-#, python-format
-msgid "Error -11"
-msgstr "Error -11"
-
-#. module: l10n_cl_libro_compra_venta
-#: code:addons/l10n_cl_libro_compra_venta/models/consumo_folios.py:1138
-#: code:addons/l10n_cl_libro_compra_venta/models/libro.py:1441
-#, python-format
-msgid "Error -11: Espere a que sea aceptado por el SII, intente en 5s más"
-msgstr "Error -11: Espere a que sea aceptado por el SII, intente en 5s más"
-
-#. module: l10n_cl_libro_compra_venta
-#: code:addons/l10n_cl_libro_compra_venta/models/consumo_folios.py:1145
-#: code:addons/l10n_cl_libro_compra_venta/models/libro.py:1448
-#, python-format
-msgid "Error RCT"
-msgstr "Error RCT"
-
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/models/invoice.py:570
-#, python-format
-msgid "Error!"
-msgstr "Error!"
 
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_tax_no_rec
@@ -2588,30 +2462,46 @@ msgstr "Error!"
 msgid "Es No Recuperable"
 msgstr "Es No Recuperable"
 
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,tipo_libro:0
-msgid "Especial"
-msgstr "Especial"
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,description:l10n_cl_chart_of_account.1_especifico_compra
+msgid "Especifico"
+msgstr "Especifico"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_state
-msgid "Estado"
-msgstr "Estado"
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,name:l10n_cl_chart_of_account.1_especifico_compra
+msgid "Específico Compra"
+msgstr "Específico Compra"
 
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_journal_excempt_documents
 msgid "Excempt Documents Available"
 msgstr "Excempt Documents Available"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,description:l10n_cl_chart_of_account.1_exento_compra
+#: model:account.tax,description:l10n_cl_chart_of_account.1_exento_venta
 msgid "Exento"
 msgstr "Exento"
+
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,name:l10n_cl_chart_of_account.1_exento_compra
+msgid "Exento Compra"
+msgstr "Exento Compra"
+
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,name:l10n_cl_chart_of_account.1_exento_venta
+msgid "Exento Venta"
+msgstr "Exento Venta"
 
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.view_purchase_order_filter
 msgid "Expected Date"
 msgstr "Fecha prevista"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_product_product_property_account_expense_id
+msgid "Expense Account"
+msgstr "Cuenta de gastos"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_validity_date
@@ -2624,16 +2514,8 @@ msgstr "Fecha de caducidad"
 msgid "Extended Filters"
 msgstr "Filtro avanzado"
 
-#. modules: purchase, sale
-#: code:addons/purchase/models/purchase.py:579
-#: code:addons/sale/models/sale.py:701
-#, python-format
-msgid "Extra line with %s "
-msgstr "Linea extra con %s"
-
-#. modules: l10n_cl_invoice, l10n_cl_libro_compra_venta
+#. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_move_factor_proporcionalidad
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_fact_prop
 msgid "Factor proporcionalidad"
 msgstr "Factor proporcionalidad"
 
@@ -2642,30 +2524,10 @@ msgstr "Factor proporcionalidad"
 msgid "Facturas de proveedores registrados fuera de plazo."
 msgstr "Documentos de Compra registrados fuera de plazo."
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_date
-msgid "Fecha"
-msgstr "Fecha"
-
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_invoice_referencias_fecha_documento
 msgid "Fecha Documento"
 msgstr "Fecha Documento"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
-msgid "Fecha Emisión"
-msgstr "Fecha Emisión"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_fecha_final
-msgid "Fecha Final"
-msgstr "Fecha Final"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_fecha_inicio
-msgid "Fecha Inicio"
-msgstr "Fecha Inicio"
 
 #. module: account_bank_statement_import
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_filename
@@ -2695,26 +2557,6 @@ msgstr ""
 "Precio fijo: todos los precios se gestionan desde el precio de venta del producto.\n"
 "Diferentes precios por Cliente: Puedes asignar precios comprando una cantidad minima en la pestaña de ventas de los productos.\n"
 "Precio avanzado en base a una fórmula: Usted puede tener todos los derechos sobre la lista de precios "
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles_folio_final
-msgid "Folio Final"
-msgstr "Folio Final"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles_folio_inicio
-msgid "Folio Inicio"
-msgstr "Folio Inicio"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_folio_notificacion
-msgid "Folio de Notificación"
-msgstr "Folio de Notificación"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
-msgid "Fono:"
-msgstr "Fono:"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_inventory_accounting_date
@@ -2761,11 +2603,6 @@ msgstr "Giro Emisor"
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.view_supplier_invoice_form
 msgid "Giro de compra"
 msgstr "Giro de compra"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
-msgid "Giro:"
-msgstr "Giro:"
 
 #. module: l10n_cl_invoice
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.view_company_inherit_form
@@ -2820,19 +2657,32 @@ msgstr "Agrupar por..."
 msgid "Group Invoice Lines"
 msgstr "Agrupar líneas de factura"
 
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_has_outstanding
+msgid "Has outstanding"
+msgstr "Contiene deudas"
+
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Hay <b>créditos pendientes</b> de imputar en la deuda seleccionada, se intentará imputar dichos créditos a otros comprobantes seleccionados pero dicha información <b>no quedará registrada en el pago</b>. Si no desea que se imputen automáticamente puede borrarlos de la lista."
+msgstr "Hay <b>créditos pendientes</b> de imputar en la deuda seleccionada, se intentará imputar dichos créditos a otros comprobantes seleccionados pero dicha información <b>no quedará registrada en el pago</b>. Si no desea que se imputen automáticamente puede borrarlos de la lista."
+
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.purchase_order_line_search
 msgid "Hide cancelled lines"
 msgstr "Ocultar líneas canceladas"
 
 #. module: l10n_cl_invoice
+#: model:ir.actions.server,name:l10n_cl_invoice.load_honorarios
 #: model:ir.ui.menu,name:l10n_cl_invoice.menu_account_honorarios
 msgid "Honorarios"
 msgstr "Honorarios"
 
-#. modules: l10n_cl_invoice, account_bank_statement_import, l10n_cl_libro_compra_venta, purchase, sale, analytic, stock_account
+#. modules: l10n_cl_invoice, account_bank_statement_import, purchase, sale, analytic, account_payment_group, stock_account
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_id
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_id
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account_id
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_line_id
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_tag_id
@@ -2847,16 +2697,6 @@ msgstr "Honorarios"
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_point_of_sale_id
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_responsability_id
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_sucursal_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tax_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tax_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_anulaciones_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_sii_dte_build_sales_book_wizard_id
 #: model:ir.model.fields,field_description:purchase.field_purchase_config_settings_id
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_id
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_line_id
@@ -2870,12 +2710,49 @@ msgstr "Honorarios"
 #: model:ir.model.fields,field_description:stock_account.field_stock_history_id
 #: model:ir.model.fields,field_description:stock_account.field_wizard_valuation_history_id
 msgid "ID"
-msgstr "ID (identificación)"
+msgstr "ID"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
-msgid "IVA"
-msgstr "IVA"
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,name:l10n_cl_chart_of_account.1_ila_compra
+msgid "ILA (Licores, Piscos, Destilados, etc.) Vinos Compras"
+msgstr "ILA (Licores, Piscos, Destilados, etc.) Vinos Compras"
+
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,description:l10n_cl_chart_of_account.1_ila_vinos_compra
+msgid "ILA 15%"
+msgstr "ILA 15%"
+
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,description:l10n_cl_chart_of_account.1_ila_compra
+msgid "ILA 27%"
+msgstr "ILA 27%"
+
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,name:l10n_cl_chart_of_account.1_ila_vinos_compra
+msgid "ILA Vinos Compras"
+msgstr "ILA Vinos Compras"
+
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_form
+msgid "IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo. La cancelación manual de una línea de pago se usa solo para correcciones y usos avanzados. Seguro desea continuar?"
+msgstr "IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo. La cancelación manual de una línea de pago se usa solo para correcciones y usos avanzados. Seguro desea continuar?"
+
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_form
+msgid "IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo. La validación manual de una línea de pago se usa solo para correcciones y usos avanzados. Seguro desea continuar?"
+msgstr "IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo. La validación manual de una línea de pago se usa solo para correcciones y usos avanzados. Seguro desea continuar?"
+
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,description:l10n_cl_chart_of_account.1_IVAC_19
+#: model:account.tax,name:l10n_cl_chart_of_account.1_IVAC_19
+msgid "IVA 19% Compra "
+msgstr "IVA 19% Compra "
+
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,description:l10n_cl_chart_of_account.1_IVAV_19
+#: model:account.tax,name:l10n_cl_chart_of_account.1_IVAV_19
+msgid "IVA 19% Venta "
+msgstr "IVA 19% Venta "
 
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,help:l10n_cl_invoice.field_sii_document_letter_vat_discriminated
@@ -2917,6 +2794,11 @@ msgstr "If the sale is locked, you can not modify it anymore. However, you will 
 msgid "If this box is checked, the system will try to group the accounting lines when generating them from invoices."
 msgstr "Si esta opción está marcada, el sistema tratará de agrupar las líneas del asiento cuando se generen desde facturas."
 
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_invoice_pay_now_journal_id
+msgid "If you set a journal here, after invoice validation, the invoice will be automatically paid with this journal. As manual paymentmethod is used, only journals with manual method are shown."
+msgstr "Si establece un diario aquí, luego de la validación de la factura, la misma va a ser automáticamente pagada con este diario. Como en el pago se fuerza método de pago manual, solo diarios con método de pago manual son mostrados."
+
 #. module: account_bank_statement_import
 #: model:ir.actions.act_window,name:account_bank_statement_import.action_account_bank_statement_import
 msgid "Import"
@@ -2947,13 +2829,15 @@ msgstr "ID de importación"
 msgid "Import Statement"
 msgstr "Importar extracto"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_impuesto
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tax_tax_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tax_tax_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_impuesto
-msgid "Impuesto"
-msgstr "Impuesto"
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,description:l10n_cl_chart_of_account.1_I_IU2C
+msgid "Impuesto Unico de 2da Categoría "
+msgstr "Impuesto Unico de 2da Categoría "
+
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,name:l10n_cl_chart_of_account.1_I_IU2C
+msgid "Impuesto Unico de Segunda Categoría "
+msgstr "Impuesto Unico de Segunda Categoría "
 
 #. module: analytic
 #: model:ir.actions.act_window,help:analytic.account_analytic_line_action
@@ -2965,7 +2849,7 @@ msgid ""
 msgstr "En Odoo, los pedidos de venta y los proyectos se implementan usando cuentas analíticas. Puede realizar seguimiento de los costes e ingresos para analizar sus márgenes fácilmente."
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:202
+#: code:addons/purchase/models/purchase.py:197
 #, python-format
 msgid "In order to delete a purchase order, you must cancel it first."
 msgstr "Para borrar un pedido de compra, debe cancelarlo primero."
@@ -2976,6 +2860,7 @@ msgid "Include landed costs in product costing computation"
 msgstr "Include landed costs in product costing computation"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_product_product_property_account_income_id
 #: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv_deposit_account_id
 msgid "Income Account"
 msgstr "Cuenta de ingresos"
@@ -3046,14 +2931,15 @@ msgstr "Valor del inventario"
 msgid "Inventory at Date"
 msgstr "Fecha del inventario"
 
-#. modules: l10n_cl_invoice, purchase, sale, stock_account
-#: code:addons/l10n_cl_invoice/models/invoice.py:258
+#. modules: l10n_cl_invoice, purchase, sale, account_payment_fix, account_payment_group, stock_account
+#: model:ir.model,name:account_payment_fix.model_account_invoice
+#: model:ir.model,name:account_payment_group.model_account_invoice
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_invoice_tree
 #: model:ir.model,name:l10n_cl_invoice.model_account_invoice
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_tree
 #: model:ir.model,name:purchase.model_account_invoice
 #: model:ir.model,name:sale.model_account_invoice
 #: model:ir.model,name:stock_account.model_account_invoice
-#, python-format
 msgid "Invoice"
 msgstr "Documento"
 
@@ -3071,12 +2957,12 @@ msgstr "Dirección factura"
 #. module: sale
 #: model:mail.message.subtype,name:sale.mt_salesteam_invoice_confirmed
 msgid "Invoice Confirmed"
-msgstr "Factura Confirmada"
+msgstr "Documento Confirmado"
 
 #. module: sale
 #: model:mail.message.subtype,name:sale.mt_salesteam_invoice_created
 msgid "Invoice Created"
-msgstr "Factura creada"
+msgstr "Documento creado"
 
 #. modules: l10n_cl_invoice, purchase, sale, stock_account
 #: model:ir.model,name:l10n_cl_invoice.model_account_invoice_line
@@ -3142,12 +3028,6 @@ msgstr "Facturar cantidades entregadas"
 msgid "Invoice ordered quantities"
 msgstr "Facturar cantidades ordenadas"
 
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/wizard/notas.py:104
-#, python-format
-msgid "Invoice refund"
-msgstr "Invoice refund"
-
 #. module: sale
 #: model:ir.model.fields,help:sale.field_crm_team_invoiced
 msgid "Invoice revenue for the current month. This is the amount the sales team has invoiced this month. It is used to compute the progression ratio of the current and target revenue on the kanban view."
@@ -3169,9 +3049,7 @@ msgid "Invoiced"
 msgstr "Facturado"
 
 #. module: sale
-#: code:addons/sale/models/sale.py:729
 #: model:ir.ui.view,arch_db:sale.view_order_form
-#, python-format
 msgid "Invoiced Quantity"
 msgstr "Cantidad Facturada"
 
@@ -3287,15 +3165,18 @@ msgstr ""
 msgid "Iva Uso Común"
 msgstr "Iva Uso Común"
 
-#. modules: l10n_cl_invoice, account_bank_statement_import
+#. modules: l10n_cl_invoice, account_bank_statement_import, account_payment_group
 #: model:ir.model,name:account_bank_statement_import.model_account_journal
+#: model:ir.model,name:account_payment_group.model_account_journal
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_journal_id
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
 #: model:ir.model,name:l10n_cl_invoice.model_account_journal
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_journal_sii_document_class_journal_id
 msgid "Journal"
 msgstr "Diario"
 
 #. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:69
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:67
 #: model:ir.ui.view,arch_db:account_bank_statement_import.account_bank_statement_import_journal_creation_view
 #, python-format
 msgid "Journal Creation"
@@ -3307,16 +3188,16 @@ msgstr "Creación de diario"
 msgid "Journal Documents Configuration"
 msgstr "Configuración de Documentos del Libro"
 
-#. modules: l10n_cl_invoice, account_financial_amount
+#. modules: l10n_cl_invoice, account_payment_group, account_financial_amount
 #: model:ir.model,name:account_financial_amount.model_account_move_line
+#: model:ir.model,name:account_payment_group.model_account_move_line
 #: model:ir.model,name:l10n_cl_invoice.model_account_move_line
 msgid "Journal Item"
 msgstr "Apunte contable"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_book_compra_venta_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_consumo_folios_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_libro_honorarios_form
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+#: model:ir.ui.view,arch_db:account_payment_group.view_move_line_tree
 msgid "Journal Items"
 msgstr "Apuntes contables"
 
@@ -3341,6 +3222,11 @@ msgstr "Giros del Libro"
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_journal_id
 msgid "Journal id"
 msgstr "ID de diario"
+
+#. module: account_payment_fix
+#: model:ir.model.fields,field_description:account_payment_fix.field_account_payment_journal_ids
+msgid "Journal ids"
+msgstr "Diarios"
 
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_partner_activities_journal_ids
@@ -3367,9 +3253,11 @@ msgstr "Gráfico del tablero kanban"
 msgid "Landed Costs"
 msgstr "Costes en destino"
 
-#. modules: l10n_cl_invoice, account_bank_statement_import, l10n_cl_libro_compra_venta, purchase, sale, analytic, stock_account
+#. modules: l10n_cl_invoice, account_bank_statement_import, purchase, sale, analytic, account_payment_group, stock_account
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import___last_update
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation___last_update
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group___last_update
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard___last_update
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account___last_update
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_line___last_update
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_tag___last_update
@@ -3384,16 +3272,6 @@ msgstr "Costes en destino"
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_point_of_sale___last_update
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_responsability___last_update
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_sucursal___last_update
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book___last_update
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas___last_update
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios___last_update
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tax___last_update
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tax___last_update
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios___last_update
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_anulaciones___last_update
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles___last_update
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos___last_update
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_sii_dte_build_sales_book_wizard___last_update
 #: model:ir.model.fields,field_description:purchase.field_purchase_config_settings___last_update
 #: model:ir.model.fields,field_description:purchase.field_purchase_order___last_update
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_line___last_update
@@ -3409,9 +3287,11 @@ msgstr "Costes en destino"
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
-#. modules: l10n_cl_invoice, account_bank_statement_import, l10n_cl_libro_compra_venta, purchase, sale, analytic, stock_account
+#. modules: l10n_cl_invoice, account_bank_statement_import, purchase, sale, analytic, account_payment_group, stock_account
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_write_uid
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_write_uid
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_write_uid
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_write_uid
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account_write_uid
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_line_write_uid
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_tag_write_uid
@@ -3426,16 +3306,6 @@ msgstr "Última modificación en"
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_point_of_sale_write_uid
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_responsability_write_uid
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_sucursal_write_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_write_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tax_write_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_write_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tax_write_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_write_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_anulaciones_write_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles_write_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_write_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_write_uid
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_sii_dte_build_sales_book_wizard_write_uid
 #: model:ir.model.fields,field_description:purchase.field_purchase_config_settings_write_uid
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_line_write_uid
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_write_uid
@@ -3446,11 +3316,13 @@ msgstr "Última modificación en"
 #: model:ir.model.fields,field_description:stock_account.field_stock_change_standard_price_write_uid
 #: model:ir.model.fields,field_description:stock_account.field_wizard_valuation_history_write_uid
 msgid "Last Updated by"
-msgstr "Última actualización de"
+msgstr "Última actualización por"
 
-#. modules: l10n_cl_invoice, account_bank_statement_import, l10n_cl_libro_compra_venta, purchase, sale, analytic, stock_account
+#. modules: l10n_cl_invoice, account_bank_statement_import, purchase, sale, analytic, account_payment_group, stock_account
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_write_date
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_write_date
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_write_date
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_write_date
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account_write_date
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_line_write_date
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_tag_write_date
@@ -3465,16 +3337,6 @@ msgstr "Última actualización de"
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_point_of_sale_write_date
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_responsability_write_date
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_sucursal_write_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_write_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tax_write_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_write_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tax_write_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_write_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_anulaciones_write_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles_write_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_write_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_write_date
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_sii_dte_build_sales_book_wizard_write_date
 #: model:ir.model.fields,field_description:purchase.field_purchase_config_settings_write_date
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_line_write_date
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_write_date
@@ -3485,7 +3347,7 @@ msgstr "Última actualización de"
 #: model:ir.model.fields,field_description:stock_account.field_stock_change_standard_price_write_date
 #: model:ir.model.fields,field_description:stock_account.field_wizard_valuation_history_write_date
 msgid "Last Updated on"
-msgstr "Última actualización en"
+msgstr "Última actualización el"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_account_invoice_line_layout_category_sequence
@@ -3524,39 +3386,10 @@ msgstr "Niveles de aprobación"
 msgid "Levels of Approvals *"
 msgstr "Levels of Approvals *"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tax_book_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tax_book_id
-msgid "Libro"
-msgstr "Libro"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.actions.report.xml,name:l10n_cl_libro_compra_venta.action_print_libro
-msgid "Libro CV PDF"
-msgstr "Libro CV PDF"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.actions.act_window,name:l10n_cl_libro_compra_venta.action_move_libro_honorarios
-#: model:ir.actions.report.xml,name:l10n_cl_libro_compra_venta.libro_h_xlsx
-#: model:ir.ui.menu,name:l10n_cl_libro_compra_venta.menu_action_move_libro_honorarios_form
-msgid "Libro Honorarios"
-msgstr "Libro Honorarios"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
-msgid "Libro de Venta Sucursal"
-msgstr "Libro de Venta Sucursal"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.actions.report.xml,name:l10n_cl_libro_compra_venta.libro_xlsx
-msgid "Libro xls"
-msgstr "Libro xls"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.actions.act_window,name:l10n_cl_libro_compra_venta.action_move_books
-#: model:ir.ui.menu,name:l10n_cl_libro_compra_venta.menu_action_move_books_form
-msgid "Libros Cierre de Mes"
-msgstr "Libros Cierre de Mes"
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group_matched_move_line_ids
+msgid "Lines that has been matched to payments, only available after payment validation"
+msgstr "Líneas que fueron imputadas a pagos, solo disponibles después de la validación del pago"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_history_location_id
@@ -3659,6 +3492,16 @@ msgstr "Margen de error para los plazos de entrega de proveedores. Cuando el sis
 msgid "Margins"
 msgstr "Márgenes"
 
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_matched_amount
+msgid "Matched amount"
+msgstr "Importe imputado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_matched_move_line_ids
+msgid "Matched move line ids"
+msgstr "Ids de los apuntes contables imputados"
+
 #. module: sale
 #: model:sale.layout_category,name:sale.sale_layout_cat_2
 msgid "Material"
@@ -3674,15 +3517,13 @@ msgstr "Medios de pago para recolectar dinero. Los módulos de Odoo ofrecen vari
 msgid "Means of payment for sending money. Odoo modules offer various payments handling facilities, but you can always use the 'Manual' payment method in order to manage payments outside of the software."
 msgstr "Medios de pago para enviar dinero. Los módulos de Odoo ofrecen varias facilidades de pago, pero usted siempre puede usar el método de pago 'Manual' para gestionar pagos por fuera del software."
 
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,tipo_libro:0
-#: selection:account.move.book.honorarios,tipo_libro:0
-msgid "Mensual"
-msgstr "Mensual"
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_communication
+msgid "Memo"
+msgstr "Glosa"
 
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_res_partner_purchase_warn_msg
-#: model:ir.model.fields,field_description:purchase.field_res_users_purchase_warn_msg
 msgid "Message for Purchase Order"
 msgstr "Mensaje para el pedido de compra"
 
@@ -3694,7 +3535,6 @@ msgstr "Mensaje para la línea del pedido de compra"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_res_partner_sale_warn_msg
-#: model:ir.model.fields,field_description:sale.field_res_users_sale_warn_msg
 msgid "Message for Sales Order"
 msgstr "Mensaje para el pedido de venta"
 
@@ -3715,54 +3555,10 @@ msgstr "Cantidad mínima para la que se requiere doble validación"
 msgid "Modifica Documento"
 msgstr "Modifica Documento"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_currency_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_currency_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tax_currency_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tax_currency_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_currency_id
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_currency_id
-msgid "Moneda"
-msgstr "Moneda"
-
 #. module: purchase
 #: model:ir.filters,name:purchase.filter_purchase_order_monthly_purchases
 msgid "Monthly Purchases"
 msgstr "Compras mensuales"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tax_amount
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tax_amount
-msgid "Monto"
-msgstr "Monto"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_monto_exento
-msgid "Monto Exento"
-msgstr "Monto Exento"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_monto_iva
-msgid "Monto IVA"
-msgstr "Monto IVA"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_monto_impuesto
-msgid "Monto Impuesto"
-msgstr "Monto Impuesto"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_neto
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_monto_neto
-msgid "Monto Neto"
-msgstr "Monto Neto"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_monto_total
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_monto_total
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_total
-msgid "Monto Total"
-msgstr "Monto Total"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.view_sales_config
@@ -3784,24 +3580,10 @@ msgstr ""
 msgid "Motivo"
 msgstr "Motivo"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_move_ids
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_move_ids
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_move_ids
-msgid "Move ids"
-msgstr "Move ids"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_sii_dte_build_sales_book_wizard_move_ids
-msgid "Moves"
-msgstr "Movimientos"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_book_compra_venta_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_consumo_folios_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_libro_honorarios_form
-msgid "Movimientos"
-msgstr "Movimientos"
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_move_line_ids
+msgid "Move line ids"
+msgstr "Apuntes Contables"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.view_sales_order_filter
@@ -3848,11 +3630,15 @@ msgid "Never allow to modify a confirmed sales order"
 msgstr "Never allow to modify a confirmed sales order"
 
 #. module: sale
-#: code:addons/sale/models/sale.py:110 code:addons/sale/models/sale.py:261
-#: code:addons/sale/models/sale.py:263 code:addons/sale/models/sale.py:265
+#: code:addons/sale/models/sale.py:102
 #, python-format
 msgid "New"
 msgstr "Nuevo"
+
+#. module: purchase
+#: model:ir.ui.view,arch_db:purchase.view_purchase_order_filter
+msgid "New Mail"
+msgstr "Nuevo correo"
 
 #. module: sale
 #: model:ir.actions.act_window,name:sale.action_quotation_form
@@ -3874,12 +3660,6 @@ msgstr "Próximo número a utilizar. Este número puede incrementar frecuentemen
 msgid "No"
 msgstr "No"
 
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,state:0
-#: selection:account.move.consumo_folios,state:0
-msgid "No Enviado"
-msgstr "No Enviado"
-
 #. modules: purchase, sale
 #: selection:product.template,purchase_line_warn:0
 #: selection:res.partner,purchase_warn:0
@@ -3899,7 +3679,7 @@ msgid "No activity yet."
 msgstr "Sin actividad aún."
 
 #. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:138
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:136
 #, python-format
 msgid "No currency found matching '%s'."
 msgstr "No se ha encontrado ninguna moneda casando '%s'."
@@ -3932,7 +3712,7 @@ msgid "No variants on products"
 msgstr "Sin variantes en productos"
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:1036
+#: code:addons/purchase/models/purchase.py:946
 #, python-format
 msgid "No vendor associated to product %s. Please set one to fix this procurement."
 msgstr "Ningún proveedor asociado al producto %s. Por favor, establecer uno para solucionar este abastecimiento."
@@ -3941,13 +3721,6 @@ msgstr "Ningún proveedor asociado al producto %s. Por favor, establecer uno par
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_sucursal_name
 msgid "Nombre de la Sucursal"
 msgstr "Nombre de la Sucursal"
-
-#. module: l10n_cl_libro_compra_venta
-#: code:addons/l10n_cl_libro_compra_venta/models/consumo_folios.py:663
-#: code:addons/l10n_cl_libro_compra_venta/models/libro.py:727
-#, python-format
-msgid "Not Service provider selected!"
-msgstr "Not Service provider selected!"
 
 #. module: l10n_cl_invoice
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.view_account_invoice_notas
@@ -3973,7 +3746,9 @@ msgstr ""
 "pedido de venta, será movido desde la lista de presupuestos a la\n"
 "de pedidos de venta."
 
-#. module: purchase
+#. modules: purchase, account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_notes
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
 #: model:ir.ui.view,arch_db:purchase.purchase_order_form
 msgid "Notes"
 msgstr "Notas"
@@ -4004,40 +3779,10 @@ msgstr "¡El nombre debe ser único por Compañía!"
 msgid "Number of days between the order confirmation and the shipping of the products to the customer"
 msgstr "Número de días entre la confirmación del pedido y la entrega de los productos al cliente"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
-msgid "Número"
-msgstr "Número"
-
-#. module: l10n_cl_invoice
-#: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_form
-msgid "Número de Documento"
-msgstr "Número de Documento"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_nro_segmento
-msgid "Número de Segmento"
-msgstr "Número de Segmento"
-
 #. module: account_bank_statement_import
 #: model:ir.ui.view,arch_db:account_bank_statement_import.account_bank_statement_import_journal_creation_view
 msgid "OK"
 msgstr "OK"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.actions.act_window,help:l10n_cl_libro_compra_venta.action_move_books
-#: model:ir.actions.act_window,help:l10n_cl_libro_compra_venta.action_move_consumo_folios
-#: model:ir.actions.act_window,help:l10n_cl_libro_compra_venta.action_move_libro_honorarios
-msgid ""
-"Odoo automatically creates one journal entry per accounting\n"
-"          document: invoice, refund, vendor payment, bank statements,\n"
-"          etc. So, you should record journal entries manually only/mainly\n"
-"          for miscellaneous operations."
-msgstr ""
-"Odoo automatically creates one journal entry per accounting\n"
-"          document: invoice, refund, vendor payment, bank statements,\n"
-"          etc. So, you should record journal entries manually only/mainly\n"
-"          for miscellaneous operations."
 
 #. module: purchase
 #: selection:product.template,purchase_method:0
@@ -4091,22 +3836,15 @@ msgstr "Presupuestos en Línea"
 msgid "Only Integer Value should be valid."
 msgstr "El único valor válido es un entero."
 
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_invoice_open_move_line_ids
+msgid "Open move line ids"
+msgstr "Abrir ids de la línea del movimiento"
+
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_history_date
 msgid "Operation Date"
 msgstr "Fecha de la operación"
-
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/models/invoice.py:633
-#, python-format
-msgid "Operation Type Error"
-msgstr "Operation Type Error"
-
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/models/invoice.py:634
-#, python-format
-msgid "Operation Type Must be \"Sale\" or \"Purchase\""
-msgstr "Operation Type Must be \"Sale\" or \"Purchase\""
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.view_sales_order_line_filter
@@ -4172,13 +3910,10 @@ msgstr "Orden del día"
 msgid "Ordered Qty"
 msgstr "Ctdad pedida"
 
-#. modules: purchase, sale
-#: code:addons/purchase/models/purchase.py:598
-#: code:addons/sale/models/sale.py:726
+#. module: sale
 #: model:ir.ui.view,arch_db:sale.view_order_form
-#, python-format
 msgid "Ordered Quantity"
-msgstr "Quantitat demanada"
+msgstr "Cantidad Pedida"
 
 #. module: sale
 #: model:ir.model.fields,help:sale.field_product_product_invoice_policy
@@ -4201,7 +3936,7 @@ msgid "Ordered quantities"
 msgstr "Cantidades pedidas"
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:838
+#: code:addons/purchase/models/purchase.py:770
 #, python-format
 msgid "Ordered quantity decreased!"
 msgstr "¡La cantidad pedida ha sido reducida!"
@@ -4265,6 +4000,11 @@ msgstr "¿Otros Disponibles?"
 msgid "Otros."
 msgstr "Otros."
 
+#. module: purchase
+#: model:ir.model,name:purchase.model_mail_mail
+msgid "Outgoing Mails"
+msgstr "Correos Salientes"
+
 #. module: l10n_cl_invoice
 #: selection:account.journal,document_sequence_type:0
 msgid "Own Sequence"
@@ -4280,12 +4020,19 @@ msgstr "PC_${(object.name or '').replace('/','_')}"
 msgid "Packaging"
 msgstr "Empaquetado"
 
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,tipo_envio:0
-msgid "Parcial"
-msgstr "Parcial"
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Paid"
+msgstr "Comp. Imputados"
 
-#. modules: analytic, sale, purchase
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_move_line_tree
+msgid "Paid Amount"
+msgstr "Importe imputado"
+
+#. modules: analytic, account_payment_group, sale, purchase
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_partner_id
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_line_partner_id
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_line_partner_id
 #: model:ir.model.fields,field_description:sale.field_sale_report_partner_id
@@ -4305,14 +4052,58 @@ msgstr "País del Asociado"
 msgid "Partner registered turns"
 msgstr "Partner registró giros"
 
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_partner_type
+msgid "Partner type"
+msgstr "Tipo de Asociado"
+
 #. modules: purchase, sale
 #: model:ir.ui.view,arch_db:purchase.view_purchase_order_search
 #: model:ir.ui.view,arch_db:sale.view_order_product_search
 msgid "Partner's Country"
 msgstr "País del Asociado"
 
-#. module: account_bank_statement_import
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_invoice_pay_now_journal_id
+msgid "Pay now Journal"
+msgstr "Diario de Pago Directo"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_amount_company_currency
+msgid "Payment Amount on Company Currency"
+msgstr "Importe de Pago en Moneda de Compañía"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_payment_date
+msgid "Payment Date"
+msgstr "Fecha de Pago"
+
+#. module: account_payment_group
+#: model:ir.model,name:account_payment_group.model_account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_payment_group_id
+msgid "Payment Group"
+msgstr "Grupo de Pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_invoice_payment_group_ids
+#: model:ir.model.fields,field_description:account_payment_group.field_account_move_line_payment_group_ids
+msgid "Payment Groups"
+msgstr "Grupos de Pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_payment_ids
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Payment Lines"
+msgstr "Líneas del Pago"
+
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Payment Method"
+msgstr "Método de Pago"
+
+#. modules: account_bank_statement_import, account_payment_group
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_outbound_payment_method_ids
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_payment_methods
 msgid "Payment Methods"
 msgstr "Métodos de pago"
 
@@ -4321,6 +4112,65 @@ msgstr "Métodos de pago"
 #: model:ir.model.fields,field_description:sale.field_sale_order_payment_term_id
 msgid "Payment Terms"
 msgstr "Términos de pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_payment_type_copy
+msgid "Payment Type"
+msgstr "Tipo de Pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_payment_group_id
+msgid "Payment group id"
+msgstr "Grupo de Pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_move_line_payment_group_matched_amount
+msgid "Payment group matched amount"
+msgstr "Importe imputado en el grupo de Pagos"
+
+#. module: account_payment_fix
+#: model:ir.model.fields,field_description:account_payment_fix.field_account_payment_payment_method_ids
+msgid "Payment method ids"
+msgstr "Métodos de pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_payment_subtype
+msgid "Payment subtype"
+msgstr "Subtipo de Pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group_debt_move_line_ids
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Payment will be automatically matched with the oldest lines of this list (by date, no by maturity date). You can remove any line you dont want to be matched."
+msgstr "El pago será automáticamente imputado con la línea más antigua de la lista (por fecha, no por fecha de vencimiento). Puede eliminar cualquier línea que no quiera que sea imputado."
+
+#. modules: account_payment_fix, account_payment_group
+#: model:ir.model,name:account_payment_fix.model_account_payment
+#: model:ir.model,name:account_payment_group.model_account_payment
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_graph
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+msgid "Payments"
+msgstr "Pagos"
+
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Payments Amount"
+msgstr "Importe de los Pagos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_payment_difference
+msgid "Payments Difference"
+msgstr "Diferencia de Pagos"
+
+#. module: account_payment_group
+#: model:ir.actions.act_window,help:account_payment_group.action_account_payments_group
+#: model:ir.actions.act_window,help:account_payment_group.action_account_payments_group_payable
+msgid ""
+"Payments are used to register liquidity movements (send or collect).\n"
+"          You can then process those payments by your own means or by using installed facilities."
+msgstr ""
+"Los pagos se utilizan para registrar movimientos de líquido (enviar, recibir o transferir dinero).\n"
+"Puede procesar esos pagos por sus propios medios o utilizando los servicios instalados."
 
 #. module: stock_account
 #: selection:product.category,property_valuation:0
@@ -4332,12 +4182,6 @@ msgstr "Periódico (Manual)"
 #: selection:stock.config.settings,group_stock_inventory_valuation:0
 msgid "Periodic inventory valuation (recommended)"
 msgstr "Valuación de inventario periódico (recomendado)"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_periodo_tributario
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_periodo_tributario
-msgid "Periodo Tributario"
-msgstr "Periodo Tributario"
 
 #. module: stock_account
 #: selection:product.category,property_valuation:0
@@ -4361,28 +4205,16 @@ msgid "Personalize the sales orders and invoice report with categories, subtotal
 msgstr "Personalize the sales orders and invoice report with categories, subtotals and page-breaks"
 
 #. module: sale
-#: code:addons/sale/models/sale.py:287
+#: code:addons/sale/models/sale.py:276
 #, python-format
 msgid "Please define an accounting sale journal for this company."
 msgstr "Por favor, defina un diario contable de ventas para esta compañía."
 
 #. module: sale
-#: code:addons/sale/models/sale.py:808
+#: code:addons/sale/models/sale.py:774
 #, python-format
 msgid "Please define income account for this product: \"%s\" (id:%d) - or for its category: \"%s\"."
 msgstr "Por favor defina la cuenta de entrada de existencias para este producto: \"%s\" (id:%d) o su categoría: \"%s\"."
-
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/models/invoice.py:570
-#, python-format
-msgid "Please define sequence on the journal related documents to this invoice."
-msgstr "Please define sequence on the journal related documents to this invoice."
-
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/wizard/journal_config_wizard.py:71
-#, python-format
-msgid "Please, set your company responsability in the company partner before continue."
-msgstr "Please, set your company responsability in the company partner before continue."
 
 #. module: l10n_cl_invoice
 #: model:ir.ui.menu,name:l10n_cl_invoice.menu_action_sii_point_of_sale
@@ -4394,6 +4226,18 @@ msgstr "Punto de Ventas"
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_journal_point_of_sale_id
 msgid "Point of sale"
 msgstr "Punto de venta"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_pop_up
+msgid "Pop up"
+msgstr "Pop up"
+
+#. module: account_payment_group
+#: selection:account.payment.group,state:0
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Posted"
+msgstr "Publicado"
 
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,help:l10n_cl_invoice.field_sii_document_class_doc_code_prefix
@@ -4460,7 +4304,8 @@ msgstr "Tarifas"
 msgid "Pricing"
 msgstr "Precio"
 
-#. module: sale
+#. modules: account_payment_group, sale
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
 #: model:ir.ui.view,arch_db:sale.view_order_form
 msgid "Print"
 msgstr "Imprimir"
@@ -4474,12 +4319,6 @@ msgstr "Imprimir SdP"
 #: selection:sale.config.settings,module_website_quote:0
 msgid "Print quotes or send by email"
 msgstr "Imprimir presupuesto o enviar por email"
-
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,state:0
-#: selection:account.move.consumo_folios,state:0
-msgid "Proceso"
-msgstr "Proceso"
 
 #. modules: purchase, sale
 #: model:ir.model,name:purchase.model_procurement_order
@@ -4568,7 +4407,12 @@ msgstr "Unidad de medida del producto"
 #: model:ir.ui.menu,name:sale.menu_product
 #: model:ir.ui.menu,name:sale.menu_products
 msgid "Product Variants"
-msgstr "Variantes del Producto"
+msgstr "Variantes de producto"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_product_id
+msgid "Product id"
+msgstr "Id del Producto"
 
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_concept_type_product_types
@@ -4660,7 +4504,6 @@ msgstr "Purchase Lead Time *"
 #: model:ir.model.fields,field_description:purchase.field_account_invoice_line_purchase_id
 #: model:ir.model.fields,field_description:purchase.field_procurement_order_purchase_id
 #: model:ir.model.fields,field_description:purchase.field_res_partner_purchase_warn
-#: model:ir.model.fields,field_description:purchase.field_res_users_purchase_warn
 #: model:ir.ui.view,arch_db:purchase.purchase_order_form
 #: model:ir.ui.view,arch_db:purchase.purchase_order_graph
 #: model:ir.ui.view,arch_db:purchase.purchase_order_pivot
@@ -4732,7 +4575,7 @@ msgid "Purchase Orders Statistics"
 msgstr "Estadísticas Ordenes de Compra"
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:733
+#: code:addons/purchase/models/purchase.py:665
 #, python-format
 msgid "Purchase order line deleted."
 msgstr "Línea de pedido de compra borrada."
@@ -4858,7 +4701,7 @@ msgstr "Cotización confirmada"
 #: model:mail.message.subtype,name:sale.mt_order_sent
 #: model:mail.message.subtype,name:sale.mt_salesteam_order_sent
 msgid "Quotation sent"
-msgstr "Cotización Enviada"
+msgstr "Cotización enviada"
 
 #. modules: purchase, sale
 #: model:ir.ui.view,arch_db:purchase.view_purchase_order_filter
@@ -4901,17 +4744,17 @@ msgstr "Petición Cotización"
 #. module: purchase
 #: model:mail.message.subtype,name:purchase.mt_rfq_approved
 msgid "RFQ Approved"
-msgstr "SdP aprobada"
+msgstr "SdC aprobada"
 
 #. module: purchase
 #: model:mail.message.subtype,name:purchase.mt_rfq_confirmed
 msgid "RFQ Confirmed"
-msgstr "SdP confirmada"
+msgstr "SdC confirmada"
 
 #. module: purchase
 #: model:mail.message.subtype,name:purchase.mt_rfq_done
 msgid "RFQ Done"
-msgstr "SdP realizada"
+msgstr "SdC realizada"
 
 #. module: purchase
 #: selection:purchase.order,state:0 selection:purchase.report,state:0
@@ -4928,11 +4771,6 @@ msgstr "PdO_${(object.name or '').replace('/','_')}"
 msgid "RFQs and Purchases"
 msgstr "PdO y compras"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
-msgid "RUT"
-msgstr "R.U.T"
-
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_country_rut_otro
 msgid "RUT otro"
@@ -4947,22 +4785,6 @@ msgstr "RUT persona jurídica"
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_country_rut_natural
 msgid "RUT persona natural"
 msgstr "RUT persona natural"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_rango_final
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_anulaciones_rango_final
-msgid "Rango Final"
-msgstr "Rango Final"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_rango_inicial
-msgid "Rango Inicial"
-msgstr "Rango Inicial"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_anulaciones_rango_inicio
-msgid "Rango Inicio"
-msgstr "Rango Inicio"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_product_product_expense_policy
@@ -4988,6 +4810,16 @@ msgstr "Listo par descubrir su nuevo favorito <b>accounting app</b>? Comience ha
 msgid "Real Price"
 msgstr "Precio real"
 
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_description
+msgid "Reason"
+msgstr "Motivo"
+
+#. module: account_payment_group
+#: selection:account.payment,payment_type_copy:0
+msgid "Receive Money"
+msgstr "Recibir Dinero"
+
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.purchase_order_form
 msgid "Receive Products"
@@ -4998,16 +4830,15 @@ msgstr "Recibir productos"
 msgid "Received Document Letters"
 msgstr "Letras de Documentos Recibidos"
 
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.account_journal_dashboard_kanban_view
+msgid "Received Money"
+msgstr "Dinero Recibido"
+
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_line_qty_received
 msgid "Received Qty"
 msgstr "Ctdad recibida"
-
-#. module: purchase
-#: code:addons/purchase/models/purchase.py:600
-#, python-format
-msgid "Received Quantity"
-msgstr "Cantidad recibida"
 
 #. module: purchase
 #: model:ir.actions.act_window,name:purchase.purchase_open_picking
@@ -5021,22 +4852,10 @@ msgstr "Recepciones"
 msgid "Receptors"
 msgstr "Receptores"
 
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,state:0
-#: selection:account.move.consumo_folios,state:0
-msgid "Rechazado"
-msgstr "Rechazado"
-
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,tipo_libro:0
-msgid "Rectifica"
-msgstr "Rectifica"
-
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,state:0
-#: selection:account.move.consumo_folios,state:0
-msgid "Reenviar"
-msgstr "Reenviar"
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Reconciled"
+msgstr "Conciliado"
 
 #. modules: analytic, purchase
 #: model:ir.model.fields,field_description:analytic.field_account_analytic_account_code
@@ -5076,11 +4895,14 @@ msgid "Referencias"
 msgstr "Referencias"
 
 #. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/models/invoice.py:260
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_form
-#, python-format
 msgid "Refund"
 msgstr "Nota de Crédito"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard_date_invoice
+msgid "Refund Date"
+msgstr "Fecha de Devolución"
 
 #. module: account_bank_statement_import
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_refund_sequence_id
@@ -5112,7 +4934,8 @@ msgstr "Registra Documentos de Zona Franca o Resolución #1057?"
 msgid "Register Manual Documents?"
 msgstr "¿Registra Documentos Tributarios Electrónicos?"
 
-#. module: l10n_cl_invoice
+#. modules: l10n_cl_invoice, account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_form
 msgid "Register Payment"
 msgstr "Registrar pago"
@@ -5122,11 +4945,10 @@ msgstr "Registrar pago"
 msgid "Register Settlement Invoices?"
 msgstr "¿Registra Documentos Tributarios Electrónicos?"
 
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,state:0
-#: selection:account.move.consumo_folios,state:0
-msgid "Reparo"
-msgstr "Reparo"
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Remove All"
+msgstr "Eliminar Todo"
 
 #. module: sale
 #: model:ir.actions.act_window,name:sale.report_configuration_action
@@ -5187,14 +5009,8 @@ msgstr "Tipos de Contribuyente"
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_invoice_responsability_id
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_company_responsability_id
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_partner_responsability_id
-#: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_users_responsability_id
 msgid "Responsability"
 msgstr "Tipo de Contribuyente"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_responsable_envio
-msgid "Responsable envio"
-msgstr "Responsable envio"
 
 #. modules: l10n_cl_invoice, purchase
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_form
@@ -5209,19 +5025,18 @@ msgstr "Responsable"
 msgid "Restore Mode"
 msgstr "Modo Restauración"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_state
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_sii_result
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_state
-msgid "Resultado"
-msgstr "Resultado"
-
-#. module: l10n_cl_invoice
+#. modules: l10n_cl_invoice, l10n_cl_chart_of_account
+#: model:account.tax,description:l10n_cl_chart_of_account.1_retencion_iva
 #: selection:account.tax,sii_type:0 selection:account.tax.template,sii_type:0
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_invoice_amount_retencion
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_invoice_tax_amount_retencion
 msgid "Retención"
 msgstr "Retención"
+
+#. module: l10n_cl_chart_of_account
+#: model:account.tax,name:l10n_cl_chart_of_account.1_retencion_iva
+msgid "Retención Total IVA"
+msgstr "Retención Total IVA"
 
 #. module: stock_account
 #: model:ir.ui.view,arch_db:stock_account.view_wizard_valuation_history
@@ -5247,11 +5062,6 @@ msgstr "Los ingresos se crearán automáticamente cuando cree facturas de client
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.view_currency_form
 msgid "SII"
 msgstr "SII"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model,name:l10n_cl_libro_compra_venta.model_sii_dte_build_sales_book_wizard
-msgid "SII Build Sales Book"
-msgstr "SII Build Sales Book"
 
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_tax_sii_code
@@ -5312,13 +5122,6 @@ msgstr "Tipo de Documento SII"
 msgid "SII Economical Activities"
 msgstr "Actividades Económicas SII"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_sii_message
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_sii_receipt
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_sii_message
-msgid "SII Message"
-msgstr "Mensajes del SII"
-
 #. module: l10n_cl_invoice
 #: model:ir.actions.act_window,name:l10n_cl_invoice.act_sii_optional_type
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.view_sii_optional_type_form
@@ -5351,12 +5154,6 @@ msgstr "SII Tipo de Documento De Referencia"
 msgid "SII Responsability"
 msgstr "Tipo de Contribuyente"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_sii_send_ident
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_sii_send_ident
-msgid "SII Send Identification"
-msgstr "Identificación de envío del SII"
-
 #. module: l10n_cl_invoice
 #: model:ir.model,name:l10n_cl_invoice.model_sii_responsability
 msgid "SII VAT Responsability"
@@ -5366,18 +5163,6 @@ msgstr "Tipo de Contribuyente"
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_currency_sii_dt_from
 msgid "SII Valid from"
 msgstr "SII Válido desde"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_sii_xml_request
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_sii_xml_request
-msgid "SII XML Request"
-msgstr "XML de envío al SII"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_sii_xml_response
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_sii_xml_response
-msgid "SII XML Response"
-msgstr "XML de respuesta del SII"
 
 #. module: l10n_cl_invoice
 #: model:ir.model,name:l10n_cl_invoice.model_sii_concept_type
@@ -5393,13 +5178,6 @@ msgstr "Tipos de Documentos Tributarios SII"
 #: model:ir.model,name:l10n_cl_invoice.model_sii_optional_type
 msgid "SII optional types"
 msgstr "Tipos Opcionales SII"
-
-#. module: l10n_cl_libro_compra_venta
-#: code:addons/l10n_cl_libro_compra_venta/models/consumo_folios.py:1145
-#: code:addons/l10n_cl_libro_compra_venta/models/libro.py:1448
-#, python-format
-msgid "SII:RESPUESTASII:RESP_HDRGLOSA"
-msgstr "SII:RESPUESTASII:RESP_HDRGLOSA"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_account_analytic_line_so_line
@@ -5470,12 +5248,11 @@ msgstr "Canal de ventas"
 msgid "Sales Information"
 msgstr "Información de ventas"
 
-#. module: sale
+#. modules: l10n_cl_invoice, sale
+#: model:ir.model,name:l10n_cl_invoice.model_sale_order
 #: model:ir.model,name:sale.model_sale_order
 #: model:ir.model.fields,field_description:sale.field_res_partner_sale_order_ids
 #: model:ir.model.fields,field_description:sale.field_res_partner_sale_warn
-#: model:ir.model.fields,field_description:sale.field_res_users_sale_order_ids
-#: model:ir.model.fields,field_description:sale.field_res_users_sale_warn
 #: model:ir.ui.view,arch_db:sale.view_order_form
 #: model:ir.ui.view,arch_db:sale.view_sales_order_filter
 #: model:res.request.link,name:sale.req_link_sale_order
@@ -5609,10 +5386,10 @@ msgstr "Buscar pedido de venta"
 msgid "Section"
 msgstr "Sección"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_sec_envio
-msgid "Secuencia de Envío"
-msgstr "Secuencia de Envío"
+#. module: account_payment_group
+#: model:res.groups,name:account_payment_group.account_see_payment_menu
+msgid "See Payments Menu"
+msgstr "Ver Menú de Pagos"
 
 #. module: account_bank_statement_import
 #: model:ir.model.fields,help:account_bank_statement_import.field_account_bank_statement_import_journal_creation_type
@@ -5643,15 +5420,28 @@ msgstr "Select a product, or create a new one on the fly. The product will defin
 msgid "Select the turns you want to             invoice in this Journal"
 msgstr "Seleccione los giros que Ud desea utilizar con este diario."
 
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_selected_debt
+msgid "Selected Debt"
+msgstr "Deuda Seleccionada"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_selected_debt_untaxed
+msgid "Selected Debt Untaxed"
+msgstr "Deuda Sin Impuestos Seleccionada"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_selected_finacial_debt
+msgid "Selected Financial Debt"
+msgstr "Deuda Financiera Seleccionada"
+
 #. modules: purchase, sale
 #: model:ir.model.fields,help:purchase.field_product_product_purchase_line_warn
 #: model:ir.model.fields,help:purchase.field_product_template_purchase_line_warn
 #: model:ir.model.fields,help:purchase.field_res_partner_purchase_warn
-#: model:ir.model.fields,help:purchase.field_res_users_purchase_warn
 #: model:ir.model.fields,help:sale.field_product_product_sale_line_warn
 #: model:ir.model.fields,help:sale.field_product_template_sale_line_warn
 #: model:ir.model.fields,help:sale.field_res_partner_sale_warn
-#: model:ir.model.fields,help:sale.field_res_users_sale_warn
 msgid "Selecting the \"Warning\" option will notify user with the message, Selecting \"Blocking Message\" will throw an exception with the message and block the flow. The Message has to be written in the next field."
 msgstr "Si selecciona la opción \"Aviso\" se notificará a los usuarios con el mensaje, si selecciona \"Mensaje de bloqueo\" se lanzará una excepción con el mensaje y se bloqueará el flujo. El mensaje debe escribirse en el siguiente campo."
 
@@ -5659,6 +5449,11 @@ msgstr "Si selecciona la opción \"Aviso\" se notificará a los usuarios con el 
 #: model:ir.model.fields,field_description:sale.field_sale_config_settings_module_website_sale_digital
 msgid "Sell digital products - provide downloadable content on your customer portal"
 msgstr "Vender productos digitales - proporcionar contenido descargable en su portal de clientes"
+
+#. module: account_payment_group
+#: selection:account.payment,payment_type_copy:0
+msgid "Send Money"
+msgstr "Enviar Dinero"
 
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.purchase_order_form
@@ -5670,13 +5465,8 @@ msgstr "Enviar PC por correo electrónico"
 msgid "Send RFQ by Email"
 msgstr "Enviar SdP por correo electrónico"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_book_compra_venta_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_consumo_folios_form
-msgid "Send XML"
-msgstr "Enviar Documento al SII"
-
-#. module: sale
+#. modules: account_payment_group, sale
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
 #: model:ir.ui.view,arch_db:sale.view_order_form
 msgid "Send by Email"
 msgstr "Enviar por Correo"
@@ -5685,6 +5475,16 @@ msgstr "Enviar por Correo"
 #: selection:sale.config.settings,module_website_quote:0
 msgid "Send quotations your customer can approve & pay online (advanced)"
 msgstr "Send quotations your customer can approve & pay online (advanced)"
+
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.account_journal_dashboard_kanban_view
+msgid "Sended Money"
+msgstr "Dinero Enviado"
+
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Sent"
+msgstr "Enviado"
 
 #. modules: l10n_cl_invoice, account_bank_statement_import, sale, purchase
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_creation_sequence
@@ -5723,7 +5523,9 @@ msgstr "Set date to all order lines"
 msgid "Set standard price"
 msgstr "Set standard price"
 
-#. modules: l10n_cl_invoice, purchase
+#. modules: l10n_cl_invoice, account_payment_fix, account_payment_group, purchase
+#: model:ir.ui.view,arch_db:account_payment_fix.view_account_payment_form
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_form
 #: model:ir.ui.view,arch_db:purchase.purchase_order_form
 msgid "Set to Draft"
@@ -5876,11 +5678,17 @@ msgstr ""
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_company_start_date
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_partner_start_date
-#: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_users_start_date
 msgid "Start-up Date"
 msgstr "Inicio de Actividades"
 
-#. modules: purchase, sale
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "State"
+msgstr "Estado"
+
+#. modules: purchase, account_payment_group, sale
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_state
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_line_state
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_state
 #: model:ir.ui.view,arch_db:purchase.purchase_order_line_search
@@ -5895,11 +5703,6 @@ msgstr "Estado"
 #: model:ir.ui.view,arch_db:stock_account.view_stock_config_settings_inherit
 msgid "Stock Accounting"
 msgstr "Contabilidad de Inventario"
-
-#. module: stock_account
-#: model:ir.actions.act_window,name:stock_account.action_stock_history
-msgid "Stock History"
-msgstr "Historial de stock"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_product_category_property_stock_account_input_categ_id
@@ -5956,7 +5759,7 @@ msgid "Stock Valuation Account (Outgoing)"
 msgstr "Cuenta de valoracion de existencias (salida)"
 
 #. module: stock_account
-#: code:addons/stock_account/wizard/wizard_valuation_history.py:35
+#: code:addons/stock_account/wizard/wizard_valuation_history.py:24
 #: model:ir.ui.view,arch_db:stock_account.view_stock_history_report_graph
 #: model:ir.ui.view,arch_db:stock_account.view_stock_history_report_pivot
 #: model:ir.ui.view,arch_db:stock_account.view_stock_history_report_search
@@ -5983,28 +5786,19 @@ msgstr "Sucursal"
 
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_res_partner_property_purchase_currency_id
-#: model:ir.model.fields,field_description:purchase.field_res_users_property_purchase_currency_id
 msgid "Supplier Currency"
 msgstr "Moneda de Proveedor"
 
 #. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/models/invoice.py:259
-#, python-format
-msgid "Supplier Invoice"
-msgstr "Supplier Invoice"
-
-#. module: l10n_cl_invoice
 #: sql_constraint:account.invoice:0
-#: code:addons/l10n_cl_invoice/models/invoice.py:555
-#, python-format
 msgid "Supplier Invoice Number must be unique per Supplier and Company!"
 msgstr "¡El número de factura de proveedor debe ser único por proveedor y por compañía!"
 
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/models/invoice.py:261
-#, python-format
-msgid "Supplier Refund"
-msgstr "Supplier Refund"
+#. module: account_payment_group
+#: model:ir.actions.act_window,name:account_payment_group.action_account_payments_group_payable
+#: model:ir.ui.menu,name:account_payment_group.menu_action_account_payments_group_payable
+msgid "Supplier Payments"
+msgstr "Egresos"
 
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_invoice_supplier_invoice_number
@@ -6056,7 +5850,6 @@ msgstr "Tax Display"
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_company_tp_sii_code
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_partner_tp_sii_code
-#: model:ir.model.fields,field_description:l10n_cl_invoice.field_res_users_tp_sii_code
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_sii_responsability_tp_sii_code
 msgid "Tax Payer SII Code"
 msgstr "Código de Contribuyente del SII"
@@ -6115,7 +5908,7 @@ msgid "Terms and conditions"
 msgstr "Términos y condiciones"
 
 #. module: sale
-#: code:addons/sale/models/sale_analytic.py:112
+#: code:addons/sale/models/sale_analytic.py:84
 #, python-format
 msgid "The Sale Order %s linked to the Analytic Account must be validated before registering expenses."
 msgstr "El pedido de venta %s enlazado a la cuenta analítica debe ser validado antes de registrar gastos."
@@ -6126,7 +5919,7 @@ msgid "The account of the statement you are importing is not yet recorded in Odo
 msgstr "La cuenta bancaria del extracto que está importando aún no está registrada en Odoo. Para poder continuar con la importación, necesita crear un diario de banco para esta cuenta."
 
 #. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:153
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:151
 #, python-format
 msgid "The account of this statement (%s) is not the same as the journal (%s)."
 msgstr "La cuenta bancaria de este extracto (%s) no es la misma que la del diario (%s)"
@@ -6142,14 +5935,8 @@ msgstr "El importe a facturar por adelantado, impuestos excluidos."
 msgid "The analytic account related to a sales order."
 msgstr "La cuenta analítica relacionada con un pedido de venta."
 
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/models/account.py:363
-#, python-format
-msgid "The company of the point of sale and of the                 journal must be the same!"
-msgstr "The company of the point of sale and of the                 journal must be the same!"
-
 #. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:163
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:161
 #, python-format
 msgid "The currency of the bank statement (%s) is not the same as the currency of the journal (%s) !"
 msgstr "La moneda del extracto bancario (%s) no es la misma que la moneda del diario (%s)"
@@ -6159,14 +5946,8 @@ msgstr "La moneda del extracto bancario (%s) no es la misma que la moneda del di
 msgid "The currency used to enter statement"
 msgstr "La divisa utilizada para introducir asientos."
 
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/models/invoice.py:426
-#, python-format
-msgid "The customer/supplier does not have a VAT defined. The type of invoicing document you selected requires you tu settle a VAT."
-msgstr "The customer/supplier does not have a VAT defined. The type of invoicing document you selected requires you tu settle a VAT."
-
 #. module: stock_account
-#: code:addons/stock_account/models/stock.py:292
+#: code:addons/stock_account/models/stock.py:278
 #, python-format
 msgid "The found valuation amount for product %s is zero. Which means there is probably a configuration error. Check the costing method and the standard price"
 msgstr "La cantidad de valoración para el producto encontrado %s es cero. Lo que significa que es probable que haya un error de configuración. Compruebe el método de cálculo de costes y el precio estándar"
@@ -6175,18 +5956,6 @@ msgstr "La cantidad de valoración para el producto encontrado %s es cero. Lo qu
 #: model:ir.model.fields,help:account_bank_statement_import.field_account_bank_statement_import_journal_creation_code
 msgid "The journal entries of this journal will be named using this prefix."
 msgstr "Los asientos de este diario será nombrados usando este prefijo."
-
-#. module: purchase
-#: code:addons/purchase/models/purchase.py:594
-#, python-format
-msgid "The ordered quantity has been decreased. Do not forget to take it into account on your bills and receipts."
-msgstr "La cantidad ordenada se ha reducido. No olvide tenerlo en cuenta en sus facturas y recibos."
-
-#. module: sale
-#: code:addons/sale/models/sale.py:722
-#, python-format
-msgid "The ordered quantity has been decreased. Do not forget to take it into account on your invoices and delivery orders."
-msgstr "La cantidad ordenada se ha reducido. No olvide tenerlo en cuenta en sus facturas y órdenes de entrega."
 
 #. module: sale
 #: model:ir.model.fields,help:sale.field_sale_config_settings_group_display_incoterm
@@ -6216,13 +5985,13 @@ msgstr ""
 "proveedores disponibles, etc."
 
 #. module: sale
-#: code:addons/sale/wizard/sale_make_invoice_advance.py:149
+#: code:addons/sale/wizard/sale_make_invoice_advance.py:147
 #, python-format
 msgid "The product used to invoice a down payment should be of type 'Service'. Please use another product or update this product."
 msgstr "El producto usado para facturar un adelanto de pago debe de ser de tipo 'Servicio'. Por favor use otro producto o actualice éste."
 
 #. module: sale
-#: code:addons/sale/wizard/sale_make_invoice_advance.py:147
+#: code:addons/sale/wizard/sale_make_invoice_advance.py:145
 #, python-format
 msgid "The product used to invoice a down payment should have an invoice policy set to \"Ordered quantities\". Please update your deposit product to be able to create a deposit invoice."
 msgstr "El producto usado para facturar un adelanto de pago debe tener una política de facturación configurada como \"Cantidad pedida\". Por favor actualice su producto para poder crear la factura de depósito."
@@ -6260,13 +6029,6 @@ msgstr ""
 msgid "The value of the down payment amount must be positive."
 msgstr "El valor del importe por adelantado debe ser positivo."
 
-#. module: l10n_cl_libro_compra_venta
-#: code:addons/l10n_cl_libro_compra_venta/models/consumo_folios.py:1032
-#: code:addons/l10n_cl_libro_compra_venta/models/libro.py:1317
-#, python-format
-msgid "There is no Signer Person with an         authorized signature for you in the system. Please make sure that         'user_signature_key' module has been installed and enable a digital         signature, for you or make the signer to authorize you to use his         signature."
-msgstr "There is no Signer Person with an         authorized signature for you in the system. Please make sure that         'user_signature_key' module has been installed and enable a digital         signature, for you or make the signer to authorize you to use his         signature."
-
 #. module: sale
 #: code:addons/sale/wizard/sale_make_invoice_advance.py:74
 #, python-format
@@ -6274,7 +6036,7 @@ msgid "There is no income account defined for this product: \"%s\". You may have
 msgstr "No existe una cuenta de ingresos definida para este producto: \"%s\". Puede que necesite instalar un plan contable desde la aplicación de Contabilidad, menú de configuración."
 
 #. module: sale
-#: code:addons/sale/models/sale.py:364 code:addons/sale/models/sale.py:368
+#: code:addons/sale/models/sale.py:366 code:addons/sale/models/sale.py:370
 #, python-format
 msgid "There is no invoicable line."
 msgstr "No hay líneas para facturar"
@@ -6283,6 +6045,16 @@ msgstr "No hay líneas para facturar"
 #: model:ir.ui.view,arch_db:sale.view_order_product_search
 msgid "This Year"
 msgstr "Este año"
+
+#. module: sale
+#: model:ir.model.fields,help:sale.field_product_product_property_account_expense_id
+msgid "This account will be used for invoices instead of the default one to value expenses for the current product."
+msgstr "Esta cuenta será usada para facturas en vez de la cuenta por defecto para valorar los gastos del producto vigente"
+
+#. module: sale
+#: model:ir.model.fields,help:sale.field_product_product_property_account_income_id
+msgid "This account will be used for invoices instead of the default one to value sales for the current product."
+msgstr "Esta cuenta se utilizará en facturas, en lugar de la cuenta por defecto, para valorar los ingresos de este producto."
 
 #. module: purchase
 #: model:ir.model.fields,help:purchase.field_product_category_property_account_creditor_price_difference_categ
@@ -6302,7 +6074,6 @@ msgstr "This changes the scheduled date of all order lines to the given date"
 
 #. module: purchase
 #: model:ir.model.fields,help:purchase.field_res_partner_property_purchase_currency_id
-#: model:ir.model.fields,help:purchase.field_res_users_property_purchase_currency_id
 msgid "This currency will be used, instead of the default one, for purchases from the current partner"
 msgstr "Se utilizará esta moneda, en lugar de la predeterminada, para las compras de la pareja actual"
 
@@ -6322,16 +6093,21 @@ msgid "This field contains the information related to the numbering of the refun
 msgstr "Este campo contiene la información relativa a la numeración de los asientos rectificativos de este diario."
 
 #. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:113
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:111
 #, python-format
 msgid "This file doesn't contain any statement."
 msgstr "Este archivo no contiene ninguno extracto."
 
 #. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:121
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:119
 #, python-format
 msgid "This file doesn't contain any transaction."
 msgstr "Este archivo no contiene ninguna transacción."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group_to_pay_move_line_ids
+msgid "This lines are the ones the user has selected to be paid."
+msgstr "Estas son las líneas que fueron seleccionadas para pagarse."
 
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.view_product_supplier_inherit
@@ -6339,13 +6115,13 @@ msgid "This note will be displayed on requests for quotation."
 msgstr "Esta nota se mostrará en las peticiones de presupuesto."
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:1053
+#: code:addons/purchase/models/purchase.py:974
 #, python-format
 msgid "This purchase order has been created from: <a href=# data-oe-model=procurement.order data-oe-id=%d>%s</a>"
 msgstr "This purchase order has been created from: <a href=# data-oe-model=procurement.order data-oe-id=%d>%s</a>"
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:1066
+#: code:addons/purchase/models/purchase.py:987
 #, python-format
 msgid "This purchase order has been modified from: <a href=# data-oe-model=procurement.order data-oe-id=%d>%s</a>"
 msgstr "This purchase order has been modified from: <a href=# data-oe-model=procurement.order data-oe-id=%d>%s</a>"
@@ -6366,13 +6142,13 @@ msgid "This report performs analysis on your sales orders. Analysis check your s
 msgstr "Este informe realiza el análisis de sus pedidos de venta. El análisis comprueba su ingresos por ventas y los ordena por diferentes criterios de agrupación (comercial, cliente, producto, etc). Use este informe para analizar las ventas que aún no han sido facturadas. Si lo que quiere analizar es su volumen de negocios, debería usar el informe de análisis de facturas en la aplicación de Contabilidad."
 
 #. module: purchase
-#: code:addons/purchase/models/account_invoice.py:195
+#: code:addons/purchase/models/account_invoice.py:189
 #, python-format
 msgid "This vendor bill has been created from: %s"
 msgstr "This vendor bill has been created from: %s"
 
 #. module: purchase
-#: code:addons/purchase/models/account_invoice.py:209
+#: code:addons/purchase/models/account_invoice.py:203
 #, python-format
 msgid "This vendor bill has been modified from: %s"
 msgstr "This vendor bill has been modified from: %s"
@@ -6392,53 +6168,11 @@ msgstr "Esto determinará el tipo de albarán de la recepción"
 msgid "Tipo De nota"
 msgstr "Tipo De nota"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
-msgid "Tipo Documento"
-msgstr "Tipo Documento"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_boletas_tipo_boleta
-msgid "Tipo de Boleta"
-msgstr "Tipo de Boleta"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles_tpo_doc
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_impuestos_tpo_doc
-msgid "Tipo de Documento"
-msgstr "Tipo de Documento"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tipo_envio
-msgid "Tipo de Envío"
-msgstr "Tipo de Envío"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_honorarios_tipo_libro
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tipo_libro
-msgid "Tipo de Libro"
-msgstr "Tipo de Libro"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_anulaciones_tpo_doc
-msgid "Tipo de documento"
-msgstr "Tipo de documento"
-
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_tax_sii_type
 #: model:ir.model.fields,field_description:l10n_cl_invoice.field_account_tax_template_sii_type
 msgid "Tipo de impuesto para el SII"
 msgstr "Tipo de impuesto para el SII"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_tipo_operacion
-msgid "Tipo de operación"
-msgstr "Tipo de operación"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_detalles_tipo_operacion
-msgid "Tipo operacion"
-msgstr "Tipo operacion"
 
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.view_purchase_order_filter
@@ -6460,16 +6194,28 @@ msgstr "Para facturar"
 msgid "To Pay"
 msgstr "A pagar"
 
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_to_pay_amount
+msgid "To Pay Amount"
+msgstr "Importe a pagar"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_to_pay_move_line_ids
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "To Pay Lines"
+msgstr "Líneas a Pagar"
+
 #. module: l10n_cl_invoice
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_tree
 msgid "To pay"
 msgstr "A pagar"
 
-#. modules: l10n_cl_invoice, analytic, sale, l10n_cl_libro_compra_venta, purchase
+#. modules: l10n_cl_invoice, analytic, account_payment_group, sale, purchase
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_from_group_tree
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_tree
+#: model:ir.ui.view,arch_db:account_payment_group.view_move_line_tree
 #: model:ir.ui.view,arch_db:analytic.view_account_analytic_line_tree
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_tree
-#: selection:account.move.book,tipo_envio:0
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.layout_libro
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_amount_total
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_line_price_total
 #: model:ir.model.fields,field_description:sale.field_sale_order_amount_total
@@ -6479,57 +6225,6 @@ msgstr "A pagar"
 #: model:ir.ui.view,arch_db:sale.view_order_line_tree
 msgid "Total"
 msgstr "Total"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_total_afecto
-msgid "Total Afecto"
-msgstr "Total Afecto"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_total_boletas
-msgid "Total Boletas"
-msgstr "Total Boletas"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_book_compra_venta_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_consumo_folios_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_libro_honorarios_form
-msgid "Total Credit"
-msgstr "Crédito total"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_book_compra_venta_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_consumo_folios_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_libro_honorarios_form
-msgid "Total Debit"
-msgstr "Débito total"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_total_exento
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_total_exento
-msgid "Total Exento"
-msgstr "Total Exento"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_total_iva
-msgid "Total IVA"
-msgstr "Total IVA"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_total_iva
-msgid "Total Iva"
-msgstr "Total Iva"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_consumo_folios_total_neto
-msgid "Total Neto"
-msgstr "Total Neto"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_total
-#: model:ir.model.fields,field_description:l10n_cl_libro_compra_venta.field_account_move_book_total_otros_imps
-msgid "Total Otros Impuestos"
-msgstr "Total Otros Impuestos"
 
 #. modules: purchase, sale
 #: model:ir.model.fields,field_description:purchase.field_purchase_report_price_total
@@ -6569,6 +6264,18 @@ msgstr "Seguimiento del Servicio"
 msgid "Transfer"
 msgstr "Transferir"
 
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Transfer To"
+msgstr "Transferir a"
+
+#. module: account_payment_group
+#: model:ir.actions.act_window,name:account_payment_group.action_account_payments_transfer
+#: model:ir.ui.menu,name:account_payment_group.menu_action_account_payments_transfer
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Transfers"
+msgstr "Transferencias"
+
 #. module: l10n_cl_invoice
 #: model:ir.model.fields,help:l10n_cl_invoice.field_sii_concept_type_product_types
 msgid "Translate this product types to this SII concept.        Types must be a subset of adjust,        consu and service separated by commas."
@@ -6588,13 +6295,13 @@ msgid "Type"
 msgstr "Tipo"
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:357
+#: code:addons/purchase/models/purchase.py:345
 #, python-format
 msgid "Unable to cancel purchase order %s as some receptions have already been done."
 msgstr "No se puede cancelar el pedido de compra %s, ya que algunas recepciones ya se han completado."
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:360
+#: code:addons/purchase/models/purchase.py:348
 #, python-format
 msgid "Unable to cancel this purchase order. You must first cancel related vendor bills."
 msgstr "Unable to cancel this purchase order. You must first cancel related vendor bills."
@@ -6634,11 +6341,15 @@ msgstr "Unidades de medida"
 msgid "Unlock"
 msgstr "Unlock"
 
-#. modules: purchase, sale
-#: model:ir.ui.view,arch_db:purchase.view_purchase_order_filter
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_unmatched_amount
+msgid "Unmatched amount"
+msgstr "Importe no imputado"
+
+#. module: sale
 #: model:ir.ui.view,arch_db:sale.view_sales_order_filter
 msgid "Unread Messages"
-msgstr "Mensajes sin leer"
+msgstr "Mensajes por leer"
 
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.purchase_order_tree
@@ -6769,6 +6480,12 @@ msgstr ""
 "emitido. Se creará una factura rectificativa, validada y conciliada con la factura.\n"
 "No será posible modificar la misma."
 
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_config_settings_double_validation
+#: model:ir.model.fields,help:account_payment_group.field_res_company_double_validation
+msgid "Use two steps validation on payments to suppliers"
+msgstr "Usar 2 pasos de validación en pagos a proveedores"
+
 #. module: stock_account
 #: model:ir.model.fields,help:stock_account.field_stock_location_valuation_in_account_id
 msgid "Used for real-time inventory valuation. When set on a virtual location (non internal type), this account will be used to hold the value of products being moved from an internal location into this location, instead of the generic Stock Output Account set on the product. This has no effect for internal locations."
@@ -6778,6 +6495,11 @@ msgstr "Usado para una valoración en tiempo real del inventario. Cuando está e
 #: model:ir.model.fields,help:stock_account.field_stock_location_valuation_out_account_id
 msgid "Used for real-time inventory valuation. When set on a virtual location (non internal type), this account will be used to hold the value of products being moved out of this location and into an internal location, instead of the generic Stock Output Account set on the product. This has no effect for internal locations."
 msgstr "Usado para una valoración en tiempo real del inventario. Cuando está establecido en una ubicación virtual (no de tipo interno), esta cuenta se usará para mantener el valor de los productos que son movidos fuera de la ubicación a una ubicación interna, en lugar de la cuenta de salida de existencias genérica establecida en el producto. No tiene efecto para ubicaciones internas."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_config_settings_group_choose_payment_type
+msgid "Used if you want let user choose payment type (inbound or outbound) when registering a payment from a payment group"
+msgstr "Utilizado si desea permitir al usuario elegir tipo de pago (entrante o saliente) cuando este registrando un pago desde un grupo de pagos"
 
 #. module: account_bank_statement_import
 #: model:ir.model.fields,help:account_bank_statement_import.field_account_bank_statement_import_journal_creation_sequence
@@ -6810,11 +6532,6 @@ msgstr "Uso Común"
 msgid "Utility field to express amount currency"
 msgstr "Campo útil para expresar importe en divisa."
 
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.consumo_folios.detalles,tipo_operacion:0
-msgid "Utilizados"
-msgstr "Utilizados"
-
 #. modules: purchase, sale
 #: model:ir.ui.view,arch_db:purchase.report_purchaseorder_document
 #: model:ir.ui.view,arch_db:purchase.report_purchasequotation_document
@@ -6822,11 +6539,9 @@ msgstr "Utilizados"
 msgid "VAT:"
 msgstr "CIF/NIF:"
 
-#. modules: l10n_cl_invoice, l10n_cl_libro_compra_venta
+#. modules: l10n_cl_invoice, account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_book_compra_venta_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_consumo_folios_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.view_electroinic_libro_honorarios_form
 msgid "Validate"
 msgstr "Validar"
 
@@ -6857,7 +6572,8 @@ msgstr "Cómputo del Valor"
 msgid "Vat Discriminated on Invoices?"
 msgstr "¿Se discrimina el IVA en las Facturas?"
 
-#. modules: l10n_cl_invoice, purchase
+#. modules: l10n_cl_invoice, purchase, account_payment_group
+#: selection:account.payment.group,partner_type:0
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_form
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_tree
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_partner_id
@@ -6899,10 +6615,16 @@ msgstr "Precio de proveedor"
 msgid "Vendor Pricelists"
 msgstr "Vendor Pricelists"
 
-#. module: purchase
+#. modules: l10n_cl_invoice, purchase
+#: model:ir.ui.view,arch_db:l10n_cl_invoice.honorarios_form
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_partner_ref
 msgid "Vendor Reference"
-msgstr "Número de Documento"
+msgstr "Referencia del Proveedor"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_product_product_supplier_taxes_id
+msgid "Vendor Taxes"
+msgstr "Impuestos de proveedor"
 
 #. module: purchase
 #: model:ir.ui.menu,name:purchase.menu_procurement_management_supplier_name
@@ -6923,21 +6645,17 @@ msgstr ""
 "que recibe de su proveedor de acuerdo con el documento\n"
 "borrador en Odoo."
 
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book,tipo_operacion:0
-msgid "Ventas"
-msgstr "Ventas"
+#. module: account_payment_group
+#: model:ir.ui.view,arch_db:account_payment_group.invoice_form
+#: model:ir.ui.view,arch_db:account_payment_group.invoice_supplier_form
+msgid "View Payments"
+msgstr "Ver pagos"
 
 #. modules: purchase, sale
 #: model:ir.model.fields,field_description:purchase.field_purchase_report_volume
 #: model:ir.model.fields,field_description:sale.field_sale_report_volume
 msgid "Volume"
 msgstr "Volumen"
-
-#. module: l10n_cl_libro_compra_venta
-#: selection:account.move.book.honorarios,state:0
-msgid "Válido"
-msgstr "Válido"
 
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.view_purchase_order_filter
@@ -6962,9 +6680,9 @@ msgid "Warning"
 msgstr "Aviso"
 
 #. modules: purchase, sale
-#: code:addons/purchase/models/purchase.py:264
-#: code:addons/purchase/models/purchase.py:799
-#: code:addons/sale/models/sale.py:888
+#: code:addons/purchase/models/purchase.py:251
+#: code:addons/purchase/models/purchase.py:731
+#: code:addons/sale/models/sale.py:858
 #, python-format
 msgid "Warning for %s"
 msgstr "Aviso para %s"
@@ -7069,13 +6787,6 @@ msgstr "Write the name of your customer to create one on the fly, or select an e
 msgid "Wrong value entered!"
 msgstr "Valor introducido no válido"
 
-#. module: l10n_cl_libro_compra_venta
-#: code:addons/l10n_cl_libro_compra_venta/models/consumo_folios.py:444
-#: code:addons/l10n_cl_libro_compra_venta/models/libro.py:485
-#, python-format
-msgid "XML Malformed Error:  %s"
-msgstr "XML Malformed Error:  %s"
-
 #. module: l10n_cl_invoice
 #: selection:res.company,invoice_vat_discrimination_default:0
 msgid "Yes, Discriminate Default"
@@ -7087,7 +6798,7 @@ msgid "Yes, No Discriminate Default"
 msgstr "Si, NO Discrimina IVA por Defecto"
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:839
+#: code:addons/purchase/models/purchase.py:771
 #, python-format
 msgid ""
 "You are decreasing the ordered quantity!\n"
@@ -7115,13 +6826,13 @@ msgstr ""
 "lo que usted compró (servicios) o recibió (productos)."
 
 #. module: sale
-#: code:addons/sale/models/sale.py:173
+#: code:addons/sale/models/sale.py:165
 #, python-format
 msgid "You can not delete a sent quotation or a sales order! Try to cancel it before."
 msgstr "You can not delete a sent quotation or a sales order! Try to cancel it before."
 
 #. module: sale
-#: code:addons/sale/models/sale.py:930
+#: code:addons/sale/models/sale.py:887
 #, python-format
 msgid ""
 "You can not remove a sale order line.\n"
@@ -7139,22 +6850,15 @@ msgstr ""
 "You can select all orders and invoice them in batch, or check\n"
 "                every order and invoice them one by one."
 
-#. module: l10n_cl_libro_compra_venta
-#: code:addons/l10n_cl_libro_compra_venta/models/consumo_folios.py:382
-#: code:addons/l10n_cl_libro_compra_venta/models/libro.py:398
-#, python-format
-msgid "You cannot delete a Validated book."
-msgstr "You cannot delete a Validated book."
-
 #. module: stock_account
-#: code:addons/stock_account/models/stock.py:261
+#: code:addons/stock_account/models/stock.py:247
 #, python-format
 msgid "You don't have any stock journal defined on your product category, check if you have installed a chart of accounts"
 msgstr "You don't have any stock journal defined on your product category, check if you have installed a chart of accounts"
 
 #. module: stock_account
 #: code:addons/stock_account/models/product.py:110
-#: code:addons/stock_account/models/stock.py:267
+#: code:addons/stock_account/models/stock.py:253
 #, python-format
 msgid "You don't have any stock valuation account defined on your product category. You must define one before processing this operation."
 msgstr "You don't have any stock valuation account defined on your product category. You must define one before processing this operation."
@@ -7165,16 +6869,10 @@ msgid "You have"
 msgstr "Tiene"
 
 #. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:237
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:232
 #, python-format
 msgid "You have already imported that file."
 msgstr "Ya ha importado este archivo."
-
-#. module: account_bank_statement_import
-#: code:addons/account_bank_statement_import/account_bank_statement_import.py:47
-#, python-format
-msgid "You have to set a Default Debit Account and a Default Credit Account for the journal: %s"
-msgstr "Debe establecer una cuenta de débito predeterminada y una cuenta de crédito predeterminada para la publicación: %s"
 
 #. module: purchase
 #: model:ir.actions.act_window,help:purchase.product_product_action
@@ -7199,16 +6897,16 @@ msgstr ""
 "            subcontractors."
 
 #. module: purchase
-#: code:addons/purchase/models/purchase.py:397
+#: code:addons/purchase/models/purchase.py:385
 #, python-format
 msgid "You must set a Vendor Location for this partner %s"
 msgstr "Debe asignar una localización para este socio %s"
 
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/models/sii.py:160
+#. module: purchase
+#: code:addons/purchase/models/purchase.py:315
 #, python-format
-msgid "You provided an invalid list of product types.                Must been separated by commas"
-msgstr "You provided an invalid list of product types.                Must been separated by commas"
+msgid "You need purchase manager access rights to validate an order above %.2f %s."
+msgstr "You need purchase manager access rights to validate an order above %.2f %s."
 
 #. module: l10n_cl_invoice
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.view_account_invoice_notas
@@ -7227,12 +6925,6 @@ msgstr ""
 #: model:ir.actions.act_window,help:sale.action_orders_to_invoice
 msgid "You will find here all orders that are ready to be invoiced."
 msgstr "You will find here all orders that are ready to be invoiced."
-
-#. module: l10n_cl_invoice
-#: code:addons/l10n_cl_invoice/wizard/journal_config_wizard.py:70
-#, python-format
-msgid "Your company has not setted any responsability"
-msgstr "Your company has not setted any responsability"
 
 #. module: sale
 #: model:ir.actions.act_window,help:sale.action_quotations
@@ -7272,7 +6964,8 @@ msgstr "_Aplicar"
 msgid "_Import"
 msgstr "_Importar"
 
-#. modules: purchase, sale
+#. modules: purchase, account_payment_group, sale
+#: model:ir.model,name:account_payment_group.model_account_config_settings
 #: model:ir.model,name:purchase.model_account_config_settings
 #: model:ir.model,name:sale.model_account_config_settings
 msgid "account.config.settings"
@@ -7288,50 +6981,10 @@ msgstr "account.invoice.referencias"
 msgid "account.journal.document_config"
 msgstr "account.journal.document_config"
 
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model,name:l10n_cl_libro_compra_venta.model_account_move_book
-msgid "account.move.book"
-msgstr "account.move.book"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model,name:l10n_cl_libro_compra_venta.model_account_move_book_boletas
-msgid "account.move.book.boletas"
-msgstr "account.move.book.boletas"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model,name:l10n_cl_libro_compra_venta.model_account_move_book_honorarios
-msgid "account.move.book.honorarios"
-msgstr "account.move.book.honorarios"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model,name:l10n_cl_libro_compra_venta.model_account_move_book_honorarios_tax
-msgid "account.move.book.honorarios.tax"
-msgstr "account.move.book.honorarios.tax"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model,name:l10n_cl_libro_compra_venta.model_account_move_book_tax
-msgid "account.move.book.tax"
-msgstr "account.move.book.tax"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model,name:l10n_cl_libro_compra_venta.model_account_move_consumo_folios
-msgid "account.move.consumo_folios"
-msgstr "account.move.consumo_folios"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model,name:l10n_cl_libro_compra_venta.model_account_move_consumo_folios_anulaciones
-msgid "account.move.consumo_folios.anulaciones"
-msgstr "account.move.consumo_folios.anulaciones"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model,name:l10n_cl_libro_compra_venta.model_account_move_consumo_folios_detalles
-msgid "account.move.consumo_folios.detalles"
-msgstr "account.move.consumo_folios.detalles"
-
-#. module: l10n_cl_libro_compra_venta
-#: model:ir.model,name:l10n_cl_libro_compra_venta.model_account_move_consumo_folios_impuestos
-msgid "account.move.consumo_folios.impuestos"
-msgstr "account.move.consumo_folios.impuestos"
+#. module: account_payment_group
+#: model:ir.model,name:account_payment_group.model_account_payment_group_invoice_wizard
+msgid "account.payment.group.invoice.wizard"
+msgstr "account.payment.group.invoice.wizard"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.view_order_form
@@ -7348,9 +7001,8 @@ msgstr "Por ejemplo, Proyecto XYZ"
 msgid "for this supplier. You can allocate them to mark this bill as paid."
 msgstr "para este proveedor. Puede asignarlos para marcar esta factura como pagada."
 
-#. modules: l10n_cl_invoice, l10n_cl_libro_compra_venta
+#. module: l10n_cl_invoice
 #: model:ir.ui.view,arch_db:l10n_cl_invoice.view_account_journal_document_config_form
-#: model:ir.ui.view,arch_db:l10n_cl_libro_compra_venta.sii_dte_masive_send_wizard_form
 msgid "or"
 msgstr "o"
 

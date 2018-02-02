@@ -47,18 +47,10 @@
             <field name="arch" type="xml">
                 <!--<button name="invoice_cancel" position="attributes">
                     <attribute name="invisible">1</attribute>
-                </button>-->      
-              <field name="invoice_line_tax_ids" position="attributes">
+                </button>-->              <field name="invoice_line_tax_ids" position="attributes">
                 <attribute name="required">True</attribute>    
               </field>
 
-              <!--
-
-              <field name="reference" position="attributes">
-                    <attribute name="required">True</attribute>
-              </field>
-
--->  
 
               <field name="state" position="before">
                 <button name="%(account.action_account_invoice_refund)d" type='action' string='Refund Invoice' groups="base.group_user" attrs="{'invisible': ['|',('type', '=', 'out_invoice'), ('state', 'not in', ('open','proforma2','paid'))]}"/>
@@ -79,10 +71,6 @@
                 <field name="partner_bank_id" position="before">
                     <field name="vat_discriminated"/>
                 </field>
-
-
-
-                
 
                <!-- <field name="origin" position="replace">
                     <field name="origin" attrs="{'readonly':[('state','not in',['draft'])]}" />
@@ -124,9 +112,6 @@
                 <field name="number" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
-
-
-
 
                 <field name="number" position="after">
                     <field name="document_number" class="oe_inline"/>
@@ -172,9 +157,6 @@
               <!--<button name="invoice_cancel" position="attributes">
                   <attribute name="invisible">1</attribute>
               </button>-->
-              <field name="reference" position="attributes">
-                  <attribute name="required">True</attribute>
-               </field>
               <field name="invoice_line_tax_ids" position="attributes">
               	<attribute name="required">True</attribute>    
               </field>
