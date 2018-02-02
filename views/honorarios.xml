@@ -42,7 +42,7 @@
                               context="{'default_customer': 0, 'search_default_supplier': 1, 'default_supplier': 1}"
                               domain="[('supplier', '=', True),
                                         ('responsability_id.tp_sii_code','=','2')]"/>
-                            <field name="reference" string="Vendor Reference"/>
+                            <field name="reference" string="Número de Documento" required="1"/>
                         </group>
                         <group>
                             <field name="origin" attrs="{'invisible': [('origin', '=', False)]}"/>
@@ -195,6 +195,8 @@
             </field>
         </record>
 
+        
+
         <record id="honorarios_tree2" model="ir.actions.act_window">
             <field name="name">Boletas Honorarios</field>
             <field name="res_model">account.invoice</field>
@@ -215,41 +217,14 @@
         </record>
 
 
-    <record model="ir.actions.server" id="load_honorarios">
-      <field name="name">Honorarios</field>
-      <field name="model_id" ref="model_account_invoice"/>
-      <field name="code">
-bh = self.pool.get('ir.model.data').get_object(cr, uid, 'l10n_cl_invoice', 'dc_m_f_dtn')
-bhe = self.pool.get('ir.model.data').get_object(cr, uid, 'l10n_cl_invoice', 'dc_m_d_dtn')
-journals_class_o = self.pool.get('account.journal.sii_document_class')
-journal_class =journals_class_o.browse(cr, uid, journals_class_o.search(cr, uid, [
-              ('sii_document_class_id.sii_code', 'in', [bh.sii_code, bhe.sii_code]),
-              ('journal_id.type', 'in', ['purchase'])]))
-ids = []
-for j in journal_class:
-  if not j.journal_id.id in ids:
-      ids.append(j.journal_id.id)
-vista = self.pool.get('ir.model.data').get_object(cr, uid, 'l10n_cl_invoice', 'honorarios_form')
-arbol = self.pool.get('ir.model.data').get_object(cr, uid, 'l10n_cl_invoice', 'honorarios_tree2')
-action = {
-            "name": "Honorarios",
-              "type": "ir.actions.act_window",
-              "view_mode": "tree,kanban,form",
-              "act_window_id": arbol.id,
-              "res_model":  'account.invoice',
-              "domain": [('type','in',('in_invoice', 'in_refund')),
-                          ('journal_id','in', ids)],
-              "context": {'default_type': 'in_invoice',
-                          'type': 'in_invoice',
-                          'journal_type': 'purchase',
-                          'honorarios': True,
-                          },
-              "filter": True,
-          }
-      </field>
-    </record>
+
+
+
     <menuitem id="menu_account_honorarios" name="Honorarios"
               parent="account.menu_finance_payables"
-              action="l10n_cl_invoice.load_honorarios" sequence="100"/>
+              action="honorarios_tree2" sequence="100"/>
+
+
+
     </data>
 </odoo>
