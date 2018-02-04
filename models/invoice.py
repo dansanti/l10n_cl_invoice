@@ -22,14 +22,16 @@ class AccountInvoiceLine(models.Model):
     def _compute_price(self):
         currency = self.invoice_id and self.invoice_id.currency_id or None
         taxes = False
-        total = self.quantity * self.price_unit
+        total = 0
         if self.invoice_line_tax_ids:
             taxes = self.invoice_line_tax_ids.compute_all(self.price_unit, currency, self.quantity, product=self.product_id, partner=self.invoice_id.partner_id, discount=self.discount)
         if taxes:
             self.price_subtotal = price_subtotal_signed = taxes['total_excluded']
         else:
-            total_discount = total * ((self.discount or 0.0) / 100.0)
-            self.price_subtotal = price_subtotal_signed = total - total_discount
+            total = self.currency_id.round((self.quantity * self.price_unit))
+            total_discount = self.currency_id.round((total * ((self.discount or 0.0) / 100.0)))
+            total -= total_discount
+            self.price_subtotal = price_subtotal_signed = total
         if self.invoice_id.currency_id and self.invoice_id.currency_id != self.invoice_id.company_id.currency_id:
             price_subtotal_signed = self.invoice_id.currency_id.compute(price_subtotal_signed, self.invoice_id.company_id.currency_id)
         sign = self.invoice_id.type in ['in_refund', 'out_refund'] and -1 or 1
