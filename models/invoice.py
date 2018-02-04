@@ -79,10 +79,11 @@ class account_invoice(models.Model):
         total = 0
         total_currency = 0
         amount_diff = self.amount_total
-        amount_diff_currency = self.amount_total
+        amount_diff_currency = 0
         if self.currency_id != company_currency:
             currency = self.currency_id.with_context(date=self.date_invoice or fields.Date.context_today(self))
-            amount_diff_currency = currency.compute(self.amount_total, company_currency)
+            amount_diff = currency.compute(self.amount_total, company_currency)
+            amount_diff_currency = self.amount_total
         for line in invoice_move_lines:
             if self.currency_id != company_currency:
                 if not (line.get('currency_id') and line.get('amount_currency')):
@@ -95,7 +96,8 @@ class account_invoice(models.Model):
                 line['price'] = self.currency_id.round(line['price'])
             ##para chequeo diferencia
             amount_diff -= line['price']
-            amount_diff_currency -= line['amount_currency']
+            if line.get('amount_currency', False):
+                amount_diff_currency -= line['amount_currency']
             if self.type in ('out_invoice', 'in_refund'):
                 total += line['price']
                 total_currency += line['amount_currency'] or line['price']
