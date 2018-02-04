@@ -45,7 +45,7 @@ class AccountInvoiceLine(models.Model):
 class AccountInvoiceTax(models.Model):
     _inherit = "account.invoice.tax"
 
-    def _getNeto(self):
+    def _getNeto(self, currency_id):
         neto = 0
         for tax in self:
             base = tax.base
@@ -55,9 +55,9 @@ class AccountInvoiceTax(models.Model):
                 if tax.tax_id in line.invoice_line_tax_ids and tax.tax_id.price_include:
                     price_tax_included += line.price_tax_included
             if price_tax_included > 0 and  tax.tax_id.sii_type in ["R"] and tax.tax_id.amount > 0:
-                base = round(price_tax_included)
+                base = currency_id.round(price_tax_included)
             elif price_tax_included > 0 and tax.tax_id.amount > 0:
-                base = round(price_tax_included / ( 1 + tax.tax_id.amount / 100.0))
+                base = currency_id.round(price_tax_included / ( 1 + tax.tax_id.amount / 100.0))
             neto += base
         return neto
 
@@ -65,7 +65,7 @@ class AccountInvoiceTax(models.Model):
         super(AccountInvoiceTax, self)._compute_base_amount()
         for tax in self:
             if tax.tax_id.price_include:
-                neto = self._getNeto()
+                neto = self._getNeto(tax.invoice_id.currency_id=)
                 tax.base = neto
 
     amount_retencion = fields.Monetary(
@@ -143,7 +143,7 @@ class account_invoice(models.Model):
                 amount_retencion  += tax.amount_retencion
             inv.amount_retencion = amount_retencion
             if included:
-                neto = inv.tax_line_ids._getNeto()
+                neto = inv.tax_line_ids._getNeto(inv.currency_id)
                 amount_retencion  += amount_retencion
             else:
                 neto = sum(line.price_subtotal for line in inv.invoice_line_ids)
