@@ -61,13 +61,6 @@ class AccountInvoiceTax(models.Model):
             neto += base
         return neto
 
-    def _compute_base_amount(self):
-        super(AccountInvoiceTax, self)._compute_base_amount()
-        for tax in self:
-            if tax.tax_id.price_include:
-                neto = self._getNeto(tax.invoice_id.currency_id)
-                tax.base = neto
-
     amount_retencion = fields.Monetary(
             string="Retención",
             default=0.00,
