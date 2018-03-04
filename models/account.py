@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from openerp import api, models, fields, _
-from openerp.exceptions import Warning
+from odoo import api, models, fields, _
+from odoo.exceptions import Warning
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -159,6 +159,19 @@ class account_move(models.Model):
                     cr, uid, record.res_id, context=context).document_number
             res[record.id] = document_number
         return res
+
+
+
+
+        """       res = {}
+        for record in self:
+            document_number = False
+            if record.model and record.res_id:
+                document_number = self.document_number
+            res[record.id] = document_number
+        return res
+
+        """
 
     @api.one
     @api.depends(

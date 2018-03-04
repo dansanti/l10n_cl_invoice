@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from openerp import osv, models, fields, api, _
-from openerp.osv import fields as old_fields
-from openerp.exceptions import except_orm, UserError
-import openerp.addons.decimal_precision as dp
+from odoo import osv, models, fields, api, _
+from odoo.tools.translate import _
+from odoo.exceptions import except_orm, UserError
+import odoo.addons.decimal_precision as dp
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -375,6 +375,7 @@ class account_invoice(models.Model):
                 document_class_ids = document_classes.ids
                     # If not specific document type found, we choose another one
         return document_class_ids
+        
 
     @api.onchange('journal_id',  'turn_issuer')
     def update_domain_journal(self):
@@ -480,8 +481,9 @@ a VAT."""))
     journal_document_class_id = fields.Many2one(
         'account.journal.sii_document_class',
         'Documents Type',
-        default=_default_journal_document_class_id,
-        domain=_domain_journal_document_class_id,
+        default=_get_available_journal_document_class,
+       # default=_default_journal_document_class_id,
+       # domain=_domain_journal_document_class_id,
         readonly=True,
         store=True,
         states={'draft': [('readonly', False)]})
@@ -583,7 +585,7 @@ a VAT."""))
             obj_inv.move_id.write(guardar)
         return True
 
-    def get_operation_type(self, cr, uid, invoice_type, context=None):
+    def get_operation_type(self, invoice_type):
         if invoice_type in ['in_invoice', 'in_refund']:
             operation_type = 'purchase'
         elif invoice_type in ['out_invoice', 'out_refund']:

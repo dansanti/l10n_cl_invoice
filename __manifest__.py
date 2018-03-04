@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 {   'active': False,
-    'author': u'Blanco Martín & Asociados, Chilean Localization Team 9.0',
-    'website': 'http://blancomartin.cl',
+    'author': u'Chilean Localization Team 10.0',
     'category': 'Localization/Chile',
     'demo_xml': [
        # 'data/partner_demo.xml',
@@ -10,7 +9,7 @@
         'sale',
         'account',
         'account_accountant',
-        'l10n_cl',
+        'l10n_cl_chart_of_account',
         'l10n_cl_base_rut',
         'l10n_cl_partner_activities'
         ],
@@ -72,5 +71,5 @@
         'data/tax.xml',
         #'views/sii_menuitem.xml',
     ],
-    'version': '9.0.6.4',
+    'version': '10.0.4.21',
 }

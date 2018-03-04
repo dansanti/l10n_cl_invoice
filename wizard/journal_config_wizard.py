@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from openerp.osv import orm
-from openerp import api, models, fields
-from openerp.tools.translate import _
+from odoo.osv import orm
+from odoo import api, models, fields
+from odoo.tools.translate import _
 import logging
-from openerp.exceptions import Warning
+from odoo.exceptions import Warning
 
 
 _logger = logging.getLogger(__name__)
