@@ -71,5 +71,6 @@
         'data/tax.xml',
         #'views/sii_menuitem.xml',
     ],
-    'version': '10.0.4.21',
+    'version': '10.0.4.22',
+    'application': True,
 }
