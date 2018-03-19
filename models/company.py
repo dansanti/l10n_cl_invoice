@@ -27,5 +27,11 @@ class res_company(models.Model):
             discriminate by default.
             """)
     tp_sii_code = fields.Char(
-        'Tax Payer SII Code', related='partner_id.tp_sii_code', readonly=True)
-
+            string='Tax Payer SII Code',
+            related='partner_id.tp_sii_code',
+            readonly=True,
+        )
+    document_number = fields.Char(
+            string='Document number',
+            related="partner_id.document_number",
+    )
