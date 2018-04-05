@@ -47,9 +47,9 @@
             <field name="arch" type="xml">
                 <!--<button name="invoice_cancel" position="attributes">
                     <attribute name="invisible">1</attribute>
-                </button>-->      
+                </button>-->
               <field name="invoice_line_tax_ids" position="attributes">
-                <attribute name="required">True</attribute>    
+                <attribute name="required">True</attribute>
               </field>
 
               <!--
@@ -58,7 +58,7 @@
                     <attribute name="required">True</attribute>
               </field>
 
--->  
+-->
 
               <field name="state" position="before">
                 <button name="%(account.action_account_invoice_refund)d" type='action' string='Refund Invoice' groups="base.group_user" attrs="{'invisible': ['|',('type', '=', 'out_invoice'), ('state', 'not in', ('open','proforma2','paid'))]}"/>
@@ -83,19 +83,11 @@
 
 
 
-                
+
 
                <!-- <field name="origin" position="replace">
                     <field name="origin" attrs="{'readonly':[('state','not in',['draft'])]}" />
-                </field>-->  
-
-                <xpath expr="//page/field[@name='tax_line_ids']/tree/field[@name='account_id']" position="after">
-                  <field name="retencion_account_id" />
-                </xpath>
-
-                <xpath expr="//page/field[@name='tax_line_ids']/tree/field[@name='amount']" position="after">
-                  <field name="amount_retencion" />
-                </xpath>
+                </field>-->
 
                 <field name="tax_line_ids" position="before">
                     <field name="referencias" mode="tree">
@@ -158,10 +150,6 @@
                         <field name="next_invoice_number" attrs="{'invisible': ['|',('document_number','!=',False),('state','!=','draft')]}" class="oe_inline"/>
                 </xpath>
 
-                <field name="amount_tax" position="after">
-                  <field name="amount_retencion" attrs="{'invisible':[('amount_retencion', '=', 0)]}" />
-                </field>
-
             </field>
         </record>
 
@@ -177,7 +165,7 @@
                   <attribute name="required">True</attribute>
                </field>
               <field name="invoice_line_tax_ids" position="attributes">
-              	<attribute name="required">True</attribute>    
+              	<attribute name="required">True</attribute>
               </field>
               <field name="state" position="before">
                 <button name="%(account.action_account_invoice_refund)d" type='action' string='Ask Refund' groups="account.group_account_invoice" attrs="{'invisible': ['|',('type', '=', 'in_invoice'),('state','not in',('open','paid'))]}"/>
@@ -242,21 +230,12 @@
                     <attribute name="string">Giro de compra</attribute>
                     <attribute name="help">Indique a cuál giro de la compañía se asigna esta compra</attribute>
                 </field>
-                <xpath expr="//field[@name='tax_line_ids']/tree/field[@name='account_id']" position="after">
-                  <field name="retencion_account_id" />
-                </xpath>
-                <xpath expr="//field[@name='tax_line_ids']/tree/field[@name='amount']" position="after">
-                  <field name="amount_retencion" />
-                </xpath>
                 <xpath expr="//notebook/page/group" position="inside">
                   <group string="Tratamiento del IVA">
                     <field name="no_rec_code" />
                     <field name="iva_uso_comun" />
                   </group>
                 </xpath>
-                <field name="amount_tax" position="after">
-                  <field name="amount_retencion" attrs="{'invisible':[('amount_retencion', '=', 0)]}" />
-                </field>
             </field>
         </record>
 

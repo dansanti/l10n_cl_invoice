@@ -63,16 +63,6 @@ class AccountInvoiceTax(models.Model):
             neto += base
         return neto
 
-    amount_retencion = fields.Monetary(
-            string="Retención",
-            default=0.00,
-        )
-    retencion_account_id = fields.Many2one(
-            'account.account',
-            string='Tax Account',
-            domain=[('deprecated', '=', False)],
-        )
-
 class account_invoice(models.Model):
     _inherit = "account.invoice"
 
@@ -375,7 +365,7 @@ class account_invoice(models.Model):
                 document_class_ids = document_classes.ids
                     # If not specific document type found, we choose another one
         return document_class_ids
-        
+
 
     @api.onchange('journal_id',  'turn_issuer')
     def update_domain_journal(self):
