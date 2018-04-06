@@ -521,9 +521,6 @@ a VAT."""))
     forma_pago = fields.Selection([('1','Contado'),('2','Crédito'),('3','Gratuito')],string="Forma de pago", readonly=True, states={'draft': [('readonly', False)]},
                     default='1')
     contact_id = fields.Many2one('res.partner', string="Contacto")
-    amount_retencion = fields.Monetary(string="Retención",
-        default=0.00,
-        compute='_compute_amount')
 
     @api.one
     @api.constrains('supplier_invoice_number', 'partner_id', 'company_id')
